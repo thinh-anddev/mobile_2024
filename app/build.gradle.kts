@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.example.food_app"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.food_app"
@@ -38,6 +38,7 @@ android {
 dependencies {
 
     implementation("androidx.core:core-ktx:1.10.1")
+    implementation ("com.google.android.material:material:1.8.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation ("com.github.bumptech.glide:glide:4.11.0")
