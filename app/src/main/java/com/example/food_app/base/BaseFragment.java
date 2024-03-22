@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewbinding.ViewBinding;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public abstract class BaseFragment<T extends ViewBinding> extends Fragment {
     protected T binding;
 
