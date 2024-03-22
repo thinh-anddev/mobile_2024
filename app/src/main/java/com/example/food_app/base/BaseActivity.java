@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewbinding.ViewBinding;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActivity {
     protected T binding;
@@ -22,11 +24,15 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
 
     //listen to user action here
     protected abstract void viewListener();
+    protected FirebaseAuth mAuth;
+    protected FirebaseUser user;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = setViewBinding();
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
         setContentView(binding.getRoot());
         initWindow();
         fullScreenCall();

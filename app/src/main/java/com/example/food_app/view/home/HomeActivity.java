@@ -1,6 +1,7 @@
 package com.example.food_app.view.home;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -12,6 +13,7 @@ import com.example.food_app.model.Category;
 import com.example.food_app.view.history.HistoryActivity;
 import com.example.food_app.view.home.adapter.CategoryAdapter;
 import com.example.food_app.view.profile.ProfileActivity;
+import com.example.food_app.view.search.SearchActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,15 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
         binding.btnProfile.setOnClickListener(v -> {
             startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
         });
+
+        binding.clSearch.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, SearchActivity.class)));
+
+
+//        String displayName = user.getDisplayName();
+//        String email = user.getEmail();
+//        String uid = user.getUid();
+//        Uri photoUrl = user.getPhotoUrl();
+//        binding.tvSeeMore.setText(displayName + email + uid + photoUrl);
     }
 
     private void initRcvCategory() {

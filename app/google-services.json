@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "974138303328",
+    "firebase_url": "https://mobile-2024-2933c-default-rtdb.firebaseio.com",
+    "project_id": "mobile-2024-2933c",
+    "storage_bucket": "mobile-2024-2933c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:974138303328:android:0d64acfc0377e159fcf405",
+        "android_client_info": {
+          "package_name": "com.example.food_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvavEoIM_ErOfrCgnVgvHgkuLf7b63hi8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

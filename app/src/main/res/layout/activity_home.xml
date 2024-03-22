@@ -54,8 +54,8 @@
         android:layout_height="60dp"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle"
         android:layout_marginTop="28dp"
-        android:background="@drawable/custom_bg_search"
-        android:paddingVertical="21dp"
+        android:background="@drawable/custom_bg_search_home"
+        android:paddingVertical="15dp"
         android:paddingHorizontal="35dp"
         android:layout_marginHorizontal="40dp"
         >
@@ -70,17 +70,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             />
 
-        <EditText
-            android:id="@+id/edtSearch"
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Search"
+            android:text="Search"
+            android:textSize="15sp"
+            android:textColor="#777777"
             android:layout_marginStart="16dp"
-            android:background="@null"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:fontFamily="@font/bevietnampro_semibold"
+            app:layout_constraintTop_toTopOf="@+id/icSearch"
+            app:layout_constraintBottom_toBottomOf="@+id/icSearch"
             app:layout_constraintStart_toEndOf="@+id/icSearch"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
