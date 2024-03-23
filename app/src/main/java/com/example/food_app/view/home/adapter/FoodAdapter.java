@@ -19,10 +19,12 @@ import java.util.List;
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder> {
     List<Food> foodList = new ArrayList<>();
     private Context context;
+    IFoodListener listener;
 
-    public FoodAdapter(Context context, List<Food> foodList) {
+    public FoodAdapter(Context context, List<Food> foodList, IFoodListener listener) {
         this.context = context;
         this.foodList = foodList;
+        this.listener = listener;
     }
     @NonNull
     @Override
@@ -43,11 +45,19 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         holder.tvFood.setText(food.getTitle());
 
         holder.tvPrice.setText(String.valueOf(food.getPrice()));
+
+        holder.itemView.setOnClickListener(v -> {
+            listener.onClick(food.getId());
+        });
     }
 
     @Override
     public int getItemCount() {
         return foodList.size();
+    }
+
+    public interface IFoodListener {
+        void onClick(int idFood);
     }
 
     public class FoodViewHolder extends RecyclerView.ViewHolder {
