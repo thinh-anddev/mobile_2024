@@ -7,11 +7,14 @@ import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.food_app.R;
 import com.example.food_app.base.BaseActivity;
 import com.example.food_app.databinding.ActivityHomeBinding;
 import com.example.food_app.model.Category;
+import com.example.food_app.model.Food;
 import com.example.food_app.view.history.HistoryActivity;
 import com.example.food_app.view.home.adapter.CategoryAdapter;
+import com.example.food_app.view.home.adapter.FoodAdapter;
 import com.example.food_app.view.profile.ProfileActivity;
 import com.example.food_app.view.search.SearchActivity;
 
@@ -20,6 +23,7 @@ import java.util.List;
 
 public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
     private CategoryAdapter categoryAdapter;
+    private FoodAdapter foodAdapter;
 
     @Override
     protected ActivityHomeBinding setViewBinding() {
@@ -29,7 +33,10 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
     @Override
     protected void initView() {
         initRcvCategory();
+        initFoodAdapter();
     }
+
+
 
     @Override
     protected void viewListener() {
@@ -65,5 +72,22 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
         categoryAdapter = new CategoryAdapter(categoryList, this);
         binding.rcvCategory.setLayoutManager(linearLayoutManager);
         binding.rcvCategory.setAdapter(categoryAdapter);
+    }
+
+    private void initFoodAdapter() {
+        List<Food> foodList = new ArrayList<>();
+        foodList.add(new Food(1,"Pizza",8.0,"pizza","con","ajasd", R.drawable.bg_splash,10));
+        foodList.add(new Food(1,"Pizza",8.0,"pizza","con","ajasd", R.drawable.bg_splash,10));
+        foodList.add(new Food(1,"Pizza",8.0,"pizza","con","ajasd", R.drawable.bg_splash,10));
+        foodList.add(new Food(1,"Pizza",8.0,"pizza","con","ajasd", R.drawable.bg_splash,10));
+        foodList.add(new Food(1,"Pizza",8.0,"pizza","con","ajasd", R.drawable.bg_splash,10));
+        foodList.add(new Food(1,"Pizza",8.0,"pizza","con","ajasd", R.drawable.bg_splash,10));
+        foodList.add(new Food(1,"Pizza",8.0,"pizza","con","ajasd", R.drawable.bg_splash,10));
+        foodList.add(new Food(1,"Pizza",8.0,"pizza","con","ajasd", R.drawable.bg_splash,10));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        foodAdapter = new FoodAdapter(this, foodList);
+        binding.rcvFood.setLayoutManager(linearLayoutManager);
+        binding.rcvFood.setAdapter(foodAdapter);
+
     }
 }
