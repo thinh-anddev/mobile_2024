@@ -42,6 +42,9 @@
         <activity
             android:name=".view.search.SearchActivity"
             android:exported="false" />
+        <activity
+            android:name=".view.food_detail.FoodDetailActivity"
+            android:exported="false" />
 
 </application>
 

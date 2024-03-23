@@ -2,8 +2,8 @@ package com.example.food_app.view.home;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -12,6 +12,7 @@ import com.example.food_app.base.BaseActivity;
 import com.example.food_app.databinding.ActivityHomeBinding;
 import com.example.food_app.model.Category;
 import com.example.food_app.model.Food;
+import com.example.food_app.view.food_detail.FoodDetailActivity;
 import com.example.food_app.view.history.HistoryActivity;
 import com.example.food_app.view.home.adapter.CategoryAdapter;
 import com.example.food_app.view.home.adapter.FoodAdapter;
@@ -76,16 +77,22 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
 
     private void initFoodAdapter() {
         List<Food> foodList = new ArrayList<>();
-        foodList.add(new Food(1,"Pizza",8.0,"pizza","con","ajasd", R.drawable.bg_splash,10));
-        foodList.add(new Food(1,"Pizza",8.0,"pizza","con","ajasd", R.drawable.bg_splash,10));
-        foodList.add(new Food(1,"Pizza",8.0,"pizza","con","ajasd", R.drawable.bg_splash,10));
-        foodList.add(new Food(1,"Pizza",8.0,"pizza","con","ajasd", R.drawable.bg_splash,10));
-        foodList.add(new Food(1,"Pizza",8.0,"pizza","con","ajasd", R.drawable.bg_splash,10));
-        foodList.add(new Food(1,"Pizza",8.0,"pizza","con","ajasd", R.drawable.bg_splash,10));
-        foodList.add(new Food(1,"Pizza",8.0,"pizza","con","ajasd", R.drawable.bg_splash,10));
-        foodList.add(new Food(1,"Pizza",8.0,"pizza","con","ajasd", R.drawable.bg_splash,10));
+        foodList.add(new Food(1,"Pizza",8.0,"pizza","con","Delivered between monday aug and thursday 20 from 8pm to 91:32 pm", R.drawable.bg_splash,10));
+        foodList.add(new Food(2,"thinh",8.0,"pizza","con","Delivered between monday aug and thursday 20 from 8pm to 91:32 pm", R.drawable.bg_splash,10));
+        foodList.add(new Food(3,"tan",8.0,"pizza","con","Delivered between monday aug and thursday 20 from 8pm to 91:32 pm", R.drawable.bg_splash,10));
+        foodList.add(new Food(4,"tin",8.0,"pizza","con","Delivered between monday aug and thursday 20 from 8pm to 91:32 pm", R.drawable.bg_splash,10));
+        foodList.add(new Food(5,"thuc",8.0,"pizza","con","Delivered between monday aug and thursday 20 from 8pm to 91:32 pm", R.drawable.bg_splash,10));
+        foodList.add(new Food(6,"tri",8.0,"pizza","con","Delivered between monday aug and thursday 20 from 8pm to 91:32 pm", R.drawable.bg_splash,10));
+        foodList.add(new Food(7,"com",8.0,"pizza","con","Delivered between monday aug and thursday 20 from 8pm to 91:32 pm", R.drawable.bg_splash,10));
+        foodList.add(new Food(8,"tuan",8.0,"pizza","con","Delivered between monday aug and thursday 20 from 8pm to 91:32 pm", R.drawable.bg_splash,10));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        foodAdapter = new FoodAdapter(this, foodList);
+        foodAdapter = new FoodAdapter(this, foodList, idFood -> {
+            Intent intent = new Intent(HomeActivity.this, FoodDetailActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("idFood",idFood);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        });
         binding.rcvFood.setLayoutManager(linearLayoutManager);
         binding.rcvFood.setAdapter(foodAdapter);
 
