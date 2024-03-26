@@ -5,16 +5,14 @@ public class User {
     private String email;
     private String photoUrl;
     private String contact;
-    private String date;
+    private String admin;
     private String paymentMethod;
 
-    public User(String id, String email, String photoUrl, String contact, String date, String paymentMethod) {
-        this.id = id;
+    public User(String email, String photoUrl, String contact, String admin) {
         this.email = email;
         this.photoUrl = photoUrl;
         this.contact = contact;
-        this.date = date;
-        this.paymentMethod = paymentMethod;
+        this.admin = admin;
     }
 
     public String getId() {
@@ -49,12 +47,12 @@ public class User {
         this.contact = contact;
     }
 
-    public String getDate() {
-        return date;
+    public String getAdmin() {
+        return admin;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setAdmin(String date) {
+        this.admin = date;
     }
 
     public String getPaymentMethod() {
