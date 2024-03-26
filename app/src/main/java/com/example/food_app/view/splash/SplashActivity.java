@@ -6,9 +6,6 @@ import android.view.LayoutInflater;
 import com.example.food_app.base.BaseActivity;
 import com.example.food_app.databinding.ActivitySplashBinding;
 import com.example.food_app.model.Food;
-import com.example.food_app.repository.Repository;
-import com.example.food_app.utils.Constant;
-import com.example.food_app.utils.SharePreferenceUtils;
 import com.example.food_app.view.user.UserActivity;
 
 import java.util.ArrayList;

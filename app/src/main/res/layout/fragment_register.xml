@@ -14,7 +14,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingBottom="40dp"
+            >
 
             <TextView
                 android:id="@+id/tvEmail"
@@ -119,7 +121,7 @@
                 android:layout_marginTop="9dp"
                 android:textColor="@color/black"
                 android:textSize="17sp"
-                android:inputType="textPassword"
+                android:inputType="number"
                 android:fontFamily="@font/bevietnampro_semibold"
                 app:layout_constraintTop_toBottomOf="@+id/tvContact"
                 />
