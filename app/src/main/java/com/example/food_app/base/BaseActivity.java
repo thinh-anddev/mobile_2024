@@ -13,6 +13,8 @@ import androidx.viewbinding.ViewBinding;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActivity {
     protected T binding;
@@ -26,6 +28,8 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     protected abstract void viewListener();
     protected FirebaseAuth mAuth;
     protected FirebaseUser user;
+    protected FirebaseDatabase db;
+    protected DatabaseReference rf;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,6 +37,8 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
         binding = setViewBinding();
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
+        db = FirebaseDatabase.getInstance();
+        rf = db.getReference();
         setContentView(binding.getRoot());
         initWindow();
         fullScreenCall();
