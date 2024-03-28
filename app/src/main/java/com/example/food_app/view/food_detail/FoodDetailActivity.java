@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-
+import com.example.food_app.helper.CallBack;
 import androidx.annotation.NonNull;
 
 import com.example.food_app.R;
@@ -28,19 +28,23 @@ public class FoodDetailActivity extends BaseActivity<ActivityFoodDetailBinding> 
 
     @Override
     protected void initView() {
-        getListFood();
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            idFood = bundle.getInt("idFood");
-            for (Food f: foodList) {
-                if (f.getId() == idFood) {
-                    binding.imvFood.setImageResource(f.getPhoto());
-                    binding.tvNameFood.setText(f.getTitle());
-                    binding.tvPrice.setText(String.valueOf(f.getPrice()));
-                    binding.tvContent.setText(f.getDescription());
+        getListFood(new CallBack.OnDataLoad() {
+            @Override
+            public void onDataLoad() {
+                Bundle bundle = getIntent().getExtras();
+                if (bundle != null) {
+                    idFood = bundle.getInt("idFood");
+                    for (Food f: foodList) {
+                        if (f.getId() == idFood) {
+                            binding.imvFood.setImageResource(f.getPhoto());
+                            binding.tvNameFood.setText(f.getTitle());
+                            binding.tvPrice.setText(String.valueOf(f.getPrice()));
+                            binding.tvContent.setText(f.getDescription());
+                        }
+                    }
                 }
             }
-        }
+        });
     }
 
     @Override
@@ -48,7 +52,7 @@ public class FoodDetailActivity extends BaseActivity<ActivityFoodDetailBinding> 
         binding.btnBack.setOnClickListener(v -> finish());
     }
 
-    private void getListFood() {
+    private void getListFood(CallBack.OnDataLoad listener) {
         foodList.clear();
         rf.child("Foods").addValueEventListener(new ValueEventListener() {
             @Override
@@ -57,6 +61,7 @@ public class FoodDetailActivity extends BaseActivity<ActivityFoodDetailBinding> 
                     Food food = d.getValue(Food.class);
                     foodList.add(food);
                 }
+                listener.onDataLoad();
                 Log.d("hehe",foodList.size()+"");
             }
 
