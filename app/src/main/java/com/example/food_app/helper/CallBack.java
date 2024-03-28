@@ -9,4 +9,8 @@ public class CallBack {
         void onDataLoad();
     }
 
+    public interface OnSearchData {
+        void onSearch();
+    }
+
 }
