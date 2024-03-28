@@ -1,23 +1,33 @@
 package com.example.food_app.view.home;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.food_app.R;
 import com.example.food_app.base.BaseActivity;
 import com.example.food_app.databinding.ActivityHomeBinding;
+import com.example.food_app.helper.CallBack;
 import com.example.food_app.model.Category;
 import com.example.food_app.model.Food;
+import com.example.food_app.repository.Repository;
+import com.example.food_app.utils.Constant;
+import com.example.food_app.utils.SharePreferenceUtils;
 import com.example.food_app.view.food_detail.FoodDetailActivity;
 import com.example.food_app.view.history.HistoryActivity;
 import com.example.food_app.view.home.adapter.CategoryAdapter;
 import com.example.food_app.view.home.adapter.FoodAdapter;
 import com.example.food_app.view.profile.ProfileActivity;
 import com.example.food_app.view.search.SearchActivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +35,10 @@ import java.util.List;
 public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
     private CategoryAdapter categoryAdapter;
     private FoodAdapter foodAdapter;
+    private List<Food> foodList = new ArrayList<>();
+    private List<Food> filterList = new ArrayList<>();
+    private String cate;
+    private ProgressDialog loadingDataDialog;
 
     @Override
     protected ActivityHomeBinding setViewBinding() {
@@ -33,8 +47,22 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
 
     @Override
     protected void initView() {
-        initRcvCategory();
-        initFoodAdapter();
+        if(SharePreferenceUtils.getBoolean(Constant.FIRST_INSTALL,false)) {
+            foodList.addAll(Repository.listFood());
+            rf.child("Foods").setValue(foodList);
+            SharePreferenceUtils.putBoolean(Constant.FIRST_INSTALL,false);
+        }
+
+        initLoadingData();
+        getListFood(new CallBack.OnDataLoad() {
+            @Override
+            public void onDataLoad() {
+                loadingDataDialog.cancel();
+                initRcvCategory();
+                initFoodAdapter();
+            }
+        });
+        Log.d("cqq",foodList.size()+"");
     }
 
 
@@ -59,34 +87,50 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
 //        binding.tvSeeMore.setText(displayName + email + uid + photoUrl);
     }
 
+    private void getListFood(CallBack.OnDataLoad listener) {
+        foodList.clear();
+        rf.child("Foods").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot d: snapshot.getChildren()) {
+                    Food food = d.getValue(Food.class);
+                    foodList.add(food);
+                }
+                listener.onDataLoad();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+
     private void initRcvCategory() {
         List<Category> categoryList = new ArrayList<>();
         categoryList.add(new Category("Pizza", false));
-        categoryList.add(new Category("Drinks", false));
-        categoryList.add(new Category("Snacks", false));
-        categoryList.add(new Category("Sauce", false));
-        categoryList.add(new Category("Rice", false));
-        categoryList.add(new Category("Chicken", false));
-        categoryList.add(new Category("Potato", false));
+        categoryList.add(new Category("drinks", false));
+        categoryList.add(new Category("snacks", false));
+        categoryList.add(new Category("sauce", false));
+        categoryList.add(new Category("rice", false));
+        categoryList.add(new Category("chicken", false));
+        categoryList.add(new Category("potato", false));
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         categoryAdapter = new CategoryAdapter(categoryList, this);
+        categoryAdapter.callBackCategory(new CallBack.OnCategoryCallBack() {
+            @Override
+            public void onClick(String category) {
+                cate = category;
+                filterFoodByCategory(cate);
+            }
+        });
+        filterFoodByCategory(categoryAdapter.setDefaultCheck());
         binding.rcvCategory.setLayoutManager(linearLayoutManager);
         binding.rcvCategory.setAdapter(categoryAdapter);
     }
 
     private void initFoodAdapter() {
-        List<Food> foodList = new ArrayList<>();
-        foodList.add(new Food(1,"Pizza",8.0,"pizza","con","Delivered between monday aug and thursday 20 from 8pm to 91:32 pm", R.drawable.bg_splash,10));
-        foodList.add(new Food(2,"thinh",8.0,"pizza","con","Delivered between monday aug and thursday 20 from 8pm to 91:32 pm", R.drawable.bg_splash,10));
-        foodList.add(new Food(3,"tan",8.0,"pizza","con","Delivered between monday aug and thursday 20 from 8pm to 91:32 pm", R.drawable.bg_splash,10));
-        foodList.add(new Food(4,"tin",8.0,"pizza","con","Delivered between monday aug and thursday 20 from 8pm to 91:32 pm", R.drawable.bg_splash,10));
-        foodList.add(new Food(5,"thuc",8.0,"pizza","con","Delivered between monday aug and thursday 20 from 8pm to 91:32 pm", R.drawable.bg_splash,10));
-        foodList.add(new Food(6,"tri",8.0,"pizza","con","Delivered between monday aug and thursday 20 from 8pm to 91:32 pm", R.drawable.bg_splash,10));
-        foodList.add(new Food(7,"com",8.0,"pizza","con","Delivered between monday aug and thursday 20 from 8pm to 91:32 pm", R.drawable.bg_splash,10));
-        foodList.add(new Food(8,"tuan",8.0,"pizza","con","Delivered between monday aug and thursday 20 from 8pm to 91:32 pm", R.drawable.bg_splash,10));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        foodAdapter = new FoodAdapter(this, foodList, idFood -> {
+        foodAdapter = new FoodAdapter(this, filterList, idFood -> {
             Intent intent = new Intent(HomeActivity.this, FoodDetailActivity.class);
             Bundle bundle = new Bundle();
             bundle.putInt("idFood",idFood);
@@ -96,5 +140,23 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
         binding.rcvFood.setLayoutManager(linearLayoutManager);
         binding.rcvFood.setAdapter(foodAdapter);
 
+    }
+
+    private void filterFoodByCategory(String cate) {
+        filterList.clear();
+        for (Food f: foodList) {
+            if (f.getCategory().equals(cate)) {
+                filterList.add(f);
+            }
+        }
+        initFoodAdapter();
+    }
+
+    private void initLoadingData() {
+        loadingDataDialog = new ProgressDialog(this);
+        loadingDataDialog.setMessage("Dang tai data");
+        loadingDataDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        loadingDataDialog.setCancelable(false);
+        loadingDataDialog.show();
     }
 }

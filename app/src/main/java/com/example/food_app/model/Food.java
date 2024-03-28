@@ -9,6 +9,9 @@ public class Food {
     private String description;
     private int photo;
     private int quantity;
+    public Food() {
+        // Default constructor required for calls to DataSnapshot.getValue(Food.class)
+    }
 
     public Food(int id, String title, double price, String category, String status, String description, int photo, int quantity) {
         this.id = id;
@@ -83,5 +86,19 @@ public class Food {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Food{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", price=" + price +
+                ", category='" + category + '\'' +
+                ", status='" + status + '\'' +
+                ", description='" + description + '\'' +
+                ", photo=" + photo +
+                ", quantity=" + quantity +
+                '}';
     }
 }

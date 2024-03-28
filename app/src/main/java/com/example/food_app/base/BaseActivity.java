@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewbinding.ViewBinding;
 
+import com.example.food_app.utils.SharePreferenceUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +40,7 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
         user = mAuth.getCurrentUser();
         db = FirebaseDatabase.getInstance();
         rf = db.getReference();
+        SharePreferenceUtils.init(this);
         setContentView(binding.getRoot());
         initWindow();
         fullScreenCall();
