@@ -1,5 +1,6 @@
 package com.example.food_app.view.user;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding> {
     private String password;
     private String cPassword;
     private String contact;
+    private ProgressDialog dialog;
     @Override
     protected FragmentRegisterBinding setViewBinding(LayoutInflater inflater, @Nullable ViewGroup viewGroup) {
         return FragmentRegisterBinding.inflate(inflater, viewGroup, false);
@@ -37,21 +39,26 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding> {
     @Override
     protected void initView() {
         mAuth = FirebaseAuth.getInstance();
+        initLoadingData();
     }
 
     @Override
     protected void viewListener() {
         binding.btnRegister.setOnClickListener(v -> {
+            dialog.show();
             email = String.valueOf(binding.edtUsername.getText());
             password = String.valueOf(binding.edtPassword.getText());
             cPassword = String.valueOf(binding.edtCPassword.getText());
             contact = String.valueOf(binding.edtContact.getText());
             if (email == null || email.isEmpty() || password == null || password.isEmpty() || cPassword == null || cPassword.isEmpty()) {
                 Toast.makeText(requireContext(), "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                dialog.cancel();
             } else if (!password.equals(cPassword)) {
                 Toast.makeText(requireContext(), "Mật khẩu không trùng khớp", Toast.LENGTH_SHORT).show();
+                dialog.cancel();
             } else if (password.length() < 8) {
                 Toast.makeText(requireContext(), "Vui lòng nhập mật khẩu tối thiểu 8 chữ số", Toast.LENGTH_SHORT).show();
+                dialog.cancel();
             } else {
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(task -> {
@@ -60,15 +67,24 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding> {
                                 mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(task1 -> {
                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(task2 -> {
                                         Toast.makeText(requireContext(), "Đăng kí thành công", Toast.LENGTH_SHORT).show();
+                                        dialog.cancel();
                                         startActivity(new Intent(requireActivity(), UserActivity.class));
                                     });
                                 });
                             } else {
                                 Log.d("hhhh","Registration failed: " + task.getException().getMessage());
+                                dialog.cancel();
                                 Toast.makeText(requireActivity(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                             }
                         });
             }
         });
+    }
+
+    private void initLoadingData() {
+        dialog = new ProgressDialog(requireContext());
+        dialog.setMessage("Dang dang nhap");
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setCancelable(false);
     }
 }
