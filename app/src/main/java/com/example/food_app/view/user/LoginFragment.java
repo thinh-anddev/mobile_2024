@@ -1,5 +1,6 @@
 package com.example.food_app.view.user;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
     FirebaseAuth mAuth;
     private String email;
     private String password;
+    private ProgressDialog dialog;
     @Override
     protected FragmentLoginBinding setViewBinding(LayoutInflater inflater, @Nullable ViewGroup viewGroup) {
         return FragmentLoginBinding.inflate(inflater, viewGroup, false);
@@ -30,15 +32,18 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
     @Override
     protected void initView() {
         mAuth = FirebaseAuth.getInstance();
+        initLoadingData();
     }
 
     @Override
     protected void viewListener() {
         binding.btnLogin.setOnClickListener(v -> {
+            dialog.show();
             email = String.valueOf(binding.edtUsername.getText());
             password = String.valueOf(binding.edtPassword.getText());
             if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
                 Toast.makeText(requireContext(), "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                dialog.cancel();
             } else {
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener( task -> {
@@ -46,11 +51,20 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
                                 //FirebaseUser user = mAuth.getCurrentUser();
                                 startActivity(new Intent(requireActivity(), HomeActivity.class));
                                 Toast.makeText(requireContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                dialog.cancel();
                             } else {
                                 Toast.makeText(requireContext(), "Tên đăng nhập hoặc mật khẩu không đúng", Toast.LENGTH_SHORT).show();
+                                dialog.cancel();
                             }
                         });
             }
         });
+    }
+
+    private void initLoadingData() {
+        dialog = new ProgressDialog(requireContext());
+        dialog.setMessage("Dang dang nhap");
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setCancelable(false);
     }
 }
