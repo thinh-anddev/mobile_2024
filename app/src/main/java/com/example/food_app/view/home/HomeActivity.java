@@ -23,6 +23,7 @@ import com.example.food_app.view.food_detail.FoodDetailActivity;
 import com.example.food_app.view.history.HistoryActivity;
 import com.example.food_app.view.home.adapter.CategoryAdapter;
 import com.example.food_app.view.home.adapter.FoodAdapter;
+import com.example.food_app.view.home.seemore.SeeMoreActivity;
 import com.example.food_app.view.profile.ProfileActivity;
 import com.example.food_app.view.search.SearchActivity;
 import com.google.firebase.database.DataSnapshot;
@@ -75,6 +76,10 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
 
         binding.btnProfile.setOnClickListener(v -> {
             startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
+        });
+
+        binding.tvSeeMore.setOnClickListener(v -> {
+            startActivity(new Intent(HomeActivity.this, SeeMoreActivity.class));
         });
 
         binding.clSearch.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, SearchActivity.class)));
