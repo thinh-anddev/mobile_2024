@@ -45,6 +45,12 @@
         <activity
             android:name=".view.food_detail.FoodDetailActivity"
             android:exported="false" />
+        <activity
+            android:name=".view.home.seemore.SeeMoreActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.cart.CartActivity"
+            android:exported="false" />
 
 </application>
 
