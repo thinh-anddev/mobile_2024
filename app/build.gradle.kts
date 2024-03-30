@@ -70,4 +70,6 @@ dependencies {
     //retrofit
     implementation("com.squareup.retrofit2:retrofit:2.10.0")
     implementation("com.squareup.retrofit2:converter-gson:2.10.0")
+    //swift layout
+    implementation("com.apachat:swipereveallayout-android:1.1.2")
 }

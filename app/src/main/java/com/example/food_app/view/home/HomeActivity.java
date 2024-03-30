@@ -19,6 +19,7 @@ import com.example.food_app.model.Food;
 import com.example.food_app.repository.Repository;
 import com.example.food_app.utils.Constant;
 import com.example.food_app.utils.SharePreferenceUtils;
+import com.example.food_app.view.cart.CartActivity;
 import com.example.food_app.view.food_detail.FoodDetailActivity;
 import com.example.food_app.view.history.HistoryActivity;
 import com.example.food_app.view.home.adapter.CategoryAdapter;
@@ -80,6 +81,10 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
 
         binding.tvSeeMore.setOnClickListener(v -> {
             startActivity(new Intent(HomeActivity.this, SeeMoreActivity.class));
+        });
+
+        binding.btnCart.setOnClickListener(v -> {
+            startActivity(new Intent(HomeActivity.this, CartActivity.class));
         });
 
         binding.clSearch.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, SearchActivity.class)));
