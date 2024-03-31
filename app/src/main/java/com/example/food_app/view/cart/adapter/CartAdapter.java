@@ -14,20 +14,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.apachat.swipereveallayout.core.SwipeLayout;
 import com.apachat.swipereveallayout.core.ViewBinder;
 import com.example.food_app.R;
+import com.example.food_app.model.Cart;
 import com.example.food_app.model.Food;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
-    private List<Food> foodList = new ArrayList<>();
+    private List<Cart> cartList = new ArrayList<>();
     private ViewBinder viewBinder = new ViewBinder();
     private Context context;
     IFoodListener listener;
-
-    public CartAdapter(Context context, List<Food> foodList,IFoodListener listener) {
+    private int curCount;
+    private int curPrice;
+    public CartAdapter(Context context, List<Cart> cartList,IFoodListener listener) {
         this.context = context;
-        this.foodList = foodList;
+        this.cartList = cartList;
         this.listener = listener;
     }
     @NonNull
@@ -39,19 +42,41 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull CartAdapter.CartViewHolder holder, int position) {
-        Food food = foodList.get(position);
+        Cart cart = cartList.get(position);
+        Food food = cart.getFood();
 
         if (food == null) {
             return;
         }
-
+        curPrice = Double.valueOf(food.getPrice()).intValue();
+        curCount = cart.getNumber();
         viewBinder.bind(holder.swipeLayout,String.valueOf(food.getId()));
         holder.tvTitle.setText(food.getTitle());
-        holder.tvPrice.setText(String.valueOf(food.getPrice()));
+        holder.tvPrice.setText(formatCost(curPrice));
         holder.imvFood.setImageResource(food.getPhoto());
 
+
+        holder.btnPlus.setOnClickListener(v -> {
+            curCount++;
+            cart.setNumber(curCount);
+            holder.tvCount.setText(String.valueOf(curCount));
+            int cost = curCount * curPrice;
+            holder.tvPrice.setText(formatCost(cost));
+        });
+
+        holder.btnSubtract.setOnClickListener(v -> {
+            if (Integer.parseInt(holder.tvCount.getText().toString())  > 1) {
+                curCount--;
+                cart.setNumber(curCount);
+                holder.tvCount.setText(String.valueOf(curCount));
+                int cost = curCount * curPrice;
+                holder.tvPrice.setText(formatCost(cost));
+            }
+        });
+
+
         holder.btnDelete.setOnClickListener(v -> {
-            foodList.remove(holder.getAdapterPosition());
+            cartList.remove(holder.getAdapterPosition());
             notifyItemRemoved(holder.getAdapterPosition());
         });
 
@@ -62,7 +87,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     @Override
     public int getItemCount() {
-        return foodList.size();
+        return cartList.size();
+    }
+
+    private String formatCost(int cost) {
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        String formattedCost = decimalFormat.format(cost)+"đ";
+        return formattedCost;
     }
 
     public interface IFoodListener {
