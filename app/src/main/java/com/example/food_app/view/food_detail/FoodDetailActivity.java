@@ -67,10 +67,21 @@ public class FoodDetailActivity extends BaseActivity<ActivityFoodDetailBinding> 
         binding.btnBack.setOnClickListener(v -> finish());
 
         binding.btnAddToCart.setOnClickListener(v -> {
-            cartList.add(new Cart(food,1));
-            rf.child("Cart").child(user != null ? user.getUid() : "").setValue(cartList).addOnCompleteListener(task -> {
-               Toast.makeText(this, "Da them vao gio hang",Toast.LENGTH_SHORT).show();
-            });
+            Log.d("food",food.getTitle());
+            boolean isExist = false;
+            for (Cart c: cartList) {
+                if (c.getFood().getId() == food.getId()) {
+                    Toast.makeText(this, "San pham nay da co trong gio hang",Toast.LENGTH_SHORT).show();
+                    isExist = true;
+                    break;
+                }
+            }
+            if (!isExist) {
+                cartList.add(new Cart(food,1));
+                rf.child("Cart").child(user != null ? user.getUid() : "").setValue(cartList).addOnCompleteListener(task -> {
+                    Toast.makeText(this, "Da them vao gio hang",Toast.LENGTH_SHORT).show();
+                });
+            }
         });
     }
 

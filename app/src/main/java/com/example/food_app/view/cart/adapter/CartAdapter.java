@@ -54,6 +54,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.tvTitle.setText(food.getTitle());
         holder.tvPrice.setText(formatCost(curPrice));
         holder.imvFood.setImageResource(food.getPhoto());
+        holder.tvCount.setText(String.valueOf(curCount));
 
 
         holder.btnPlus.setOnClickListener(v -> {

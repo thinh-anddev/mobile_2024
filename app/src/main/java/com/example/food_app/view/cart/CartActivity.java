@@ -3,6 +3,7 @@ package com.example.food_app.view.cart;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -18,6 +19,7 @@ import com.example.food_app.view.cart.adapter.CartAdapter;
 import com.example.food_app.view.food_detail.FoodDetailActivity;
 import com.example.food_app.view.home.HomeActivity;
 import com.example.food_app.view.home.adapter.FoodAdapter;
+import com.example.food_app.view.home.seemore.SeeMoreActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -38,6 +40,7 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
 
     @Override
     protected void initView() {
+        binding.tvClickHere.setText(Html.fromHtml("<font color=#FA4A0C>Nhấn vào đây </font> <font color=#000000>để đặt thức ăn thôi nào</font>"));
         initLoadingData();
         getListCartFromFirebase(new CallBack.OnDataLoad() {
             @Override
@@ -53,7 +56,15 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
     protected void viewListener() {
         binding.btnBack.setOnClickListener(v -> {
             updateCartInFirebase();
+            onBackPressed();
+        });
+        binding.tvClickHere.setOnClickListener(v -> {
+            startActivity(new Intent(this, SeeMoreActivity.class));
             finish();
+        });
+        binding.btnClearAll.setOnClickListener(v -> {
+            cartList.clear();
+            updateCartInFirebase();
         });
     }
 
@@ -127,14 +138,23 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
         if (cartList.size() == 0) {
             binding.llContent.setVisibility(View.GONE);
             binding.rcvCart.setVisibility(View.GONE);
+            binding.clEmptyCart.setVisibility(View.VISIBLE);
         } else {
             binding.llContent.setVisibility(View.VISIBLE);
             binding.rcvCart.setVisibility(View.VISIBLE);
+            binding.clEmptyCart.setVisibility(View.GONE);
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        cartList.clear();
+        updateCartInFirebase();
+        super.onDestroy();
     }
 }
