@@ -3,6 +3,7 @@ package com.example.food_app.model;
 public class Cart {
     private Food food;
     private int number;
+    private boolean isCheck;
 
     public Cart(){}
 
@@ -25,5 +26,13 @@ public class Cart {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public boolean isCheck() {
+        return isCheck;
+    }
+
+    public void setCheck(boolean check) {
+        isCheck = check;
     }
 }

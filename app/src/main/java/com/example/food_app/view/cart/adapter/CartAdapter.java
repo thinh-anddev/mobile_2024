@@ -1,5 +1,6 @@
 package com.example.food_app.view.cart.adapter;
 
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.apachat.swipereveallayout.core.SwipeLayout;
@@ -48,6 +51,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         if (food == null) {
             return;
         }
+
+        if (cart.isCheck()) {
+            holder.clView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.custom_bg_cart_check));
+        } else {
+            holder.clView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.custom_bg_cart_uncheck));
+        }
         curPrice = Double.valueOf(food.getPrice()).intValue();
         curCount = cart.getNumber();
         viewBinder.bind(holder.swipeLayout,String.valueOf(food.getId()));
@@ -75,7 +84,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             }
         });
 
-
         holder.btnDelete.setOnClickListener(v -> {
             cartList.remove(holder.getAdapterPosition());
             notifyItemRemoved(holder.getAdapterPosition());
@@ -83,7 +91,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         });
 
         holder.btnFarvourite.setOnClickListener(v -> {
-            listener.onAddFar(food.getId());
+            listener.onAddFar(food);
+        });
+
+        holder.clView.setOnClickListener(v -> {
+            cart.setCheck(!cart.isCheck());
+            notifyDataSetChanged();
         });
     }
 
@@ -99,13 +112,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     }
 
     public interface IFoodListener {
-        void onAddFar(int idFood);
+        void onAddFar(Food food);
         void onDeleteFood();
     }
 
     public class CartViewHolder extends RecyclerView.ViewHolder {
         SwipeLayout swipeLayout;
         LinearLayout llBonus;
+        ConstraintLayout clView;
         ImageView btnFarvourite,btnDelete,imvFood,btnSubtract,btnPlus;
         TextView tvTitle,tvPrice,tvCount;
 
@@ -121,6 +135,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvCount = itemView.findViewById(R.id.tvCount);
+            clView = itemView.findViewById(R.id.clView);
         }
     }
 }

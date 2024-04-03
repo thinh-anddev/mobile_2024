@@ -137,9 +137,7 @@ public class FoodDetailActivity extends BaseActivity<ActivityFoodDetailBinding> 
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
 
