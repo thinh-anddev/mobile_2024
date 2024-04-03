@@ -51,6 +51,9 @@
         <activity
             android:name=".view.cart.CartActivity"
             android:exported="false" />
+        <activity
+            android:name=".view.favourite.FavouriteActivity"
+            android:exported="false" />
 
 </application>
 

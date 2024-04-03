@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -50,10 +51,13 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
                 setUpCartScreen();
             }
         });
+
+        initListener();
     }
 
     @Override
-    protected void viewListener() {
+    protected void viewListener() {}
+    private void initListener() {
         binding.btnBack.setOnClickListener(v -> {
             updateCartInFirebase();
             onBackPressed();
@@ -68,23 +72,6 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
         });
     }
 
-//    private void getListFood(CallBack.OnDataLoad listener) {
-//        cartList.clear();
-//        rf.child("Foods").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for (DataSnapshot d: snapshot.getChildren()) {
-//                    Food food = d.getValue(Food.class);
-//                    cartList.add(food);
-//                }
-//                listener.onDataLoad();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {}
-//        });
-//    }
-
     private void initLoadingData() {
         dialogLoading = new ProgressDialog(this);
         dialogLoading.setMessage("Dang tai data");
@@ -95,12 +82,17 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
 
     private void initCartAdapter() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        cartAdapter = new CartAdapter(this, cartList, idFood -> {
-//            Intent intent = new Intent(CartActivity.this, FoodDetailActivity.class);
-//            Bundle bundle = new Bundle();
-//            bundle.putInt("idFood",idFood);
-//            intent.putExtras(bundle);
-//            startActivity(intent);
+        cartAdapter = new CartAdapter(this, cartList, new CartAdapter.IFoodListener() {
+            @Override
+            public void onAddFar(int idFood) {
+
+            }
+
+            @Override
+            public void onDeleteFood() {
+                updateCartInFirebase();
+                setUpCartScreen();
+            }
         });
         binding.rcvCart.setLayoutManager(linearLayoutManager);
         binding.rcvCart.setAdapter(cartAdapter);
@@ -120,9 +112,7 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
 
@@ -151,10 +141,4 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
         super.onResume();
     }
 
-    @Override
-    protected void onDestroy() {
-        cartList.clear();
-        updateCartInFirebase();
-        super.onDestroy();
-    }
 }

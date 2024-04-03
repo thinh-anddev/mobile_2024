@@ -16,6 +16,8 @@ import com.example.food_app.base.BaseActivity;
 import com.example.food_app.databinding.ActivityFoodDetailBinding;
 import com.example.food_app.model.Cart;
 import com.example.food_app.model.Food;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -27,6 +29,7 @@ import java.util.List;
 public class FoodDetailActivity extends BaseActivity<ActivityFoodDetailBinding> {
     private int idFood;
     private List<Food> foodList = new ArrayList<>();
+    private List<Food> favouriteList = new ArrayList<>();
     private Food food = null;
     ProgressDialog dialogLoading;
     private List<Cart> cartList = new ArrayList<>();
@@ -60,18 +63,36 @@ public class FoodDetailActivity extends BaseActivity<ActivityFoodDetailBinding> 
                 }
             }
         });
+        getListFavouriteFromFirebase(new CallBack.OnDataLoad() {
+            @Override
+            public void onDataLoad() {}
+        });
     }
 
     @Override
     protected void viewListener() {
         binding.btnBack.setOnClickListener(v -> finish());
 
+        binding.btnFarvourite.setOnClickListener(v -> {
+            boolean isExist = false;
+            for (Food f: favouriteList) {
+                if (f.getId() == food.getId()) {
+                    Toast.makeText(this, "Món nay đã có trong danh sách yêu thích của bạn",Toast.LENGTH_SHORT).show();
+                    isExist = true;
+                    break;
+                }
+            }
+            if (!isExist) {
+                addFoodToFavouriteList();
+            }
+        });
+
         binding.btnAddToCart.setOnClickListener(v -> {
             Log.d("food",food.getTitle());
             boolean isExist = false;
             for (Cart c: cartList) {
                 if (c.getFood().getId() == food.getId()) {
-                    Toast.makeText(this, "San pham nay da co trong gio hang",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Sản phẩm này đã có trong giỏ hàng",Toast.LENGTH_SHORT).show();
                     isExist = true;
                     break;
                 }
@@ -79,7 +100,7 @@ public class FoodDetailActivity extends BaseActivity<ActivityFoodDetailBinding> 
             if (!isExist) {
                 cartList.add(new Cart(food,1));
                 rf.child("Cart").child(user != null ? user.getUid() : "").setValue(cartList).addOnCompleteListener(task -> {
-                    Toast.makeText(this, "Da them vao gio hang",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Đã thêm vào giỏ hàng",Toast.LENGTH_SHORT).show();
                 });
             }
         });
@@ -119,6 +140,30 @@ public class FoodDetailActivity extends BaseActivity<ActivityFoodDetailBinding> 
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+        });
+    }
+
+    private void getListFavouriteFromFirebase(CallBack.OnDataLoad listener) {
+        favouriteList.clear();
+        rf.child("Favourite").child(user != null ? user.getUid() : "").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    Food f = d.getValue(Food.class);
+                    favouriteList.add(f);
+                }
+                listener.onDataLoad();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+
+    private void addFoodToFavouriteList() {
+        favouriteList.add(food);
+        rf.child("Favourite").child(user != null ? user.getUid() : "").setValue(favouriteList).addOnCompleteListener(task -> {
+            Toast.makeText(this, "Đã thêm vào danh sách yêu thích",Toast.LENGTH_SHORT).show();
         });
     }
     private void initLoadingData() {

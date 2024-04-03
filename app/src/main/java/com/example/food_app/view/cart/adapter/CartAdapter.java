@@ -79,10 +79,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.btnDelete.setOnClickListener(v -> {
             cartList.remove(holder.getAdapterPosition());
             notifyItemRemoved(holder.getAdapterPosition());
+            listener.onDeleteFood();
         });
 
         holder.btnFarvourite.setOnClickListener(v -> {
-            listener.onClick(food.getId());
+            listener.onAddFar(food.getId());
         });
     }
 
@@ -98,7 +99,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     }
 
     public interface IFoodListener {
-        void onClick(int idFood);
+        void onAddFar(int idFood);
+        void onDeleteFood();
     }
 
     public class CartViewHolder extends RecyclerView.ViewHolder {
