@@ -4,8 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,6 +18,7 @@ import com.example.food_app.helper.CallBack;
 import com.example.food_app.model.Cart;
 import com.example.food_app.model.Food;
 import com.example.food_app.view.cart.adapter.CartAdapter;
+import com.example.food_app.view.favourite.FavouriteActivity;
 import com.example.food_app.view.food_detail.FoodDetailActivity;
 import com.example.food_app.view.home.HomeActivity;
 import com.example.food_app.view.home.adapter.FoodAdapter;
@@ -31,6 +34,7 @@ import java.util.List;
 
 public class CartActivity extends BaseActivity<ActivityCartBinding> {
     private List<Cart> cartList = new ArrayList<>();
+    private List<Food> favouriteList = new ArrayList<>();
     private ProgressDialog dialogLoading;
     private CartAdapter cartAdapter;
     @Override
@@ -50,10 +54,17 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
                 setUpCartScreen();
             }
         });
+        getListFavouriteFromFirebase(new CallBack.OnDataLoad() {
+            @Override
+            public void onDataLoad() {}
+        });
+
+        initListener();
     }
 
     @Override
-    protected void viewListener() {
+    protected void viewListener() {}
+    private void initListener() {
         binding.btnBack.setOnClickListener(v -> {
             updateCartInFirebase();
             onBackPressed();
@@ -68,23 +79,6 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
         });
     }
 
-//    private void getListFood(CallBack.OnDataLoad listener) {
-//        cartList.clear();
-//        rf.child("Foods").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for (DataSnapshot d: snapshot.getChildren()) {
-//                    Food food = d.getValue(Food.class);
-//                    cartList.add(food);
-//                }
-//                listener.onDataLoad();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {}
-//        });
-//    }
-
     private void initLoadingData() {
         dialogLoading = new ProgressDialog(this);
         dialogLoading.setMessage("Dang tai data");
@@ -95,12 +89,26 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
 
     private void initCartAdapter() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        cartAdapter = new CartAdapter(this, cartList, idFood -> {
-//            Intent intent = new Intent(CartActivity.this, FoodDetailActivity.class);
-//            Bundle bundle = new Bundle();
-//            bundle.putInt("idFood",idFood);
-//            intent.putExtras(bundle);
-//            startActivity(intent);
+        cartAdapter = new CartAdapter(this, cartList, new CartAdapter.IFoodListener() {
+            @Override
+            public void onAddFar(Food food) {
+                boolean isExist = false;
+                for (Food f: favouriteList) {
+                    if (f.getId() == food.getId()) {
+                        Toast.makeText(CartActivity.this, "Món nay đã có trong danh sách yêu thích của bạn",Toast.LENGTH_SHORT).show();
+                        isExist = true;
+                        break;
+                    }
+                }
+                if (!isExist) {
+                    favouriteList.add(food);
+                    addFoodToFavouriteList();
+                }
+            }
+            @Override
+            public void onDeleteFood() {
+                setUpCartScreen();
+            }
         });
         binding.rcvCart.setLayoutManager(linearLayoutManager);
         binding.rcvCart.setAdapter(cartAdapter);
@@ -120,9 +128,7 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
 
@@ -146,15 +152,37 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
         }
     }
 
+    private void addFoodToFavouriteList() {
+        rf.child("Favourite").child(user != null ? user.getUid() : "").setValue(favouriteList).addOnCompleteListener(task -> {
+            Toast.makeText(this, "Đã thêm vào danh sách yêu thích",Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void getListFavouriteFromFirebase(CallBack.OnDataLoad listener) {
+        favouriteList.clear();
+        rf.child("Favourite").child(user != null ? user.getUid() : "").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    Food f = d.getValue(Food.class);
+                    favouriteList.add(f);
+                }
+                listener.onDataLoad();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
     }
 
-    @Override
-    protected void onDestroy() {
-        cartList.clear();
-        updateCartInFirebase();
-        super.onDestroy();
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        updateCartInFirebase();
+//    }
 }

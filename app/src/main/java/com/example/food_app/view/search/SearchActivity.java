@@ -14,6 +14,7 @@ import com.example.food_app.base.BaseActivity;
 import com.example.food_app.databinding.ActivitySearchBinding;
 import com.example.food_app.helper.CallBack;
 import com.example.food_app.model.Food;
+import com.example.food_app.utils.CommonUtils;
 import com.example.food_app.view.food_detail.FoodDetailActivity;
 import com.example.food_app.view.home.HomeActivity;
 import com.example.food_app.view.home.adapter.FoodAdapter;
@@ -66,10 +67,12 @@ public class SearchActivity extends BaseActivity<ActivitySearchBinding> {
                         binding.tvCountFood.setText("Da tim thay "+ searchList.size()+" san pham cho ban");
                         binding.rcvSearch.setVisibility(View.VISIBLE);
                         binding.layoutNoFood.setVisibility(View.GONE);
+                        CommonUtils.hideSoftKeyboard(SearchActivity.this);
                     } else {
                         binding.layoutNoFood.setVisibility(View.VISIBLE);
                         binding.tvCountFood.setVisibility(View.GONE);
                         binding.rcvSearch.setVisibility(View.GONE);
+                        CommonUtils.hideSoftKeyboard(SearchActivity.this);
                     }
                     dialog.cancel();
                 }

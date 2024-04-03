@@ -13,4 +13,8 @@ public class CallBack {
         void onSearch();
     }
 
+    public interface OnAddToFarvourite {
+        void onAdd();
+    }
+
 }
