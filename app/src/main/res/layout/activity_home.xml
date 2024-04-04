@@ -35,6 +35,16 @@
                     app:layout_constraintStart_toStartOf="parent"
                     />
 
+                <TextView
+                    android:id="@+id/tvXoa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="xóa tài khoản"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/btnMenu"
+                    app:layout_constraintEnd_toStartOf="@+id/btnCart"
+                    />
+
                 <ImageView
                     android:id="@+id/btnCart"
                     android:layout_width="wrap_content"

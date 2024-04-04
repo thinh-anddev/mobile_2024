@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +29,7 @@ import com.example.food_app.view.home.adapter.FoodAdapter;
 import com.example.food_app.view.home.seemore.SeeMoreActivity;
 import com.example.food_app.view.profile.ProfileActivity;
 import com.example.food_app.view.search.SearchActivity;
+import com.example.food_app.view.user.UserActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -93,7 +95,10 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
         });
 
         binding.clSearch.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, SearchActivity.class)));
-
+        binding.tvXoa.setOnClickListener(v -> {
+            user.delete();
+            startActivity(new Intent(HomeActivity.this, UserActivity.class));
+        });
 
 //        String displayName = user.getDisplayName();
 //        String email = user.getEmail();

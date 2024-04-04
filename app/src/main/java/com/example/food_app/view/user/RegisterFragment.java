@@ -63,7 +63,7 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding> {
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
-                                User user = new User(email,"",contact,"0");
+                                User user = new User(email,getNameFromEmail(email),"","",contact,"0");
                                 mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(task1 -> {
                                     FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(task2 -> {
                                         Toast.makeText(requireContext(), "Đăng kí thành công", Toast.LENGTH_SHORT).show();
@@ -86,5 +86,11 @@ public class RegisterFragment extends BaseFragment<FragmentRegisterBinding> {
         dialog.setMessage("Dang dang nhap");
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setCancelable(false);
+    }
+
+    private String getNameFromEmail(String email) {
+        String[] parts = email.split("@");
+        String name = parts[0];
+        return name;
     }
 }
