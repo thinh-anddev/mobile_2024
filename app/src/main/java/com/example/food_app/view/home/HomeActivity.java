@@ -100,9 +100,9 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
 
         binding.clSearch.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, SearchActivity.class)));
         binding.tvXoa.setOnClickListener(v -> {
-//            user.delete();
-//            startActivity(new Intent(HomeActivity.this, UserActivity.class));
-            startActivity(new Intent(HomeActivity.this, ChooseAddress.class));
+            user.delete();
+            startActivity(new Intent(HomeActivity.this, UserActivity.class));
+            //startActivity(new Intent(HomeActivity.this, ChooseAddress.class));
         });
 
 //        String displayName = user.getDisplayName();
