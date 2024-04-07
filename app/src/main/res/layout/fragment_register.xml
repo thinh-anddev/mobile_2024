@@ -5,102 +5,146 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#F2F2F2">
 
-    <TextView
-        android:id="@+id/tvEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Email address"
-        android:fontFamily="@font/bevietnampro_semibold"
-        android:textColor="#A3A3A3"
-        android:textSize="15sp"
-        android:layout_marginTop="64dp"
-        android:layout_marginStart="50dp"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edtUsername"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="50dp"
-        android:layout_marginTop="9dp"
-        android:textColor="@color/black"
-        android:textSize="17sp"
-        android:inputType="textEmailAddress"
-        android:fontFamily="@font/bevietnampro_semibold"
-        app:layout_constraintTop_toBottomOf="@+id/tvEmail"
-        />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="40dp"
+            >
 
-    <TextView
-        android:id="@+id/tvPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Password"
-        android:fontFamily="@font/bevietnampro_semibold"
-        android:textColor="#A3A3A3"
-        android:textSize="15sp"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="50dp"
-        app:layout_constraintTop_toBottomOf="@+id/edtUsername"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email address"
+                android:fontFamily="@font/bevietnampro_semibold"
+                android:textColor="#A3A3A3"
+                android:textSize="15sp"
+                android:layout_marginTop="64dp"
+                android:layout_marginStart="50dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edtPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="50dp"
-        android:layout_marginTop="9dp"
-        android:textColor="@color/black"
-        android:textSize="17sp"
-        android:inputType="textPassword"
-        android:fontFamily="@font/bevietnampro_semibold"
-        app:layout_constraintTop_toBottomOf="@+id/tvPassword"
-        />
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="9dp"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:inputType="textEmailAddress"
+                android:fontFamily="@font/bevietnampro_semibold"
+                app:layout_constraintTop_toBottomOf="@+id/tvEmail"
+                />
 
-    <TextView
-        android:id="@+id/tvCPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Confirm Password"
-        android:fontFamily="@font/bevietnampro_semibold"
-        android:textColor="#A3A3A3"
-        android:textSize="15sp"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="50dp"
-        app:layout_constraintTop_toBottomOf="@+id/edtPassword"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+            <TextView
+                android:id="@+id/tvPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:fontFamily="@font/bevietnampro_semibold"
+                android:textColor="#A3A3A3"
+                android:textSize="15sp"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="50dp"
+                app:layout_constraintTop_toBottomOf="@+id/edtUsername"
+                app:layout_constraintStart_toStartOf="parent"
+                />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edtCPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="50dp"
-        android:layout_marginTop="9dp"
-        android:textColor="@color/black"
-        android:textSize="17sp"
-        android:inputType="textPassword"
-        android:fontFamily="@font/bevietnampro_semibold"
-        app:layout_constraintTop_toBottomOf="@+id/tvCPassword"
-        />
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="9dp"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:inputType="textPassword"
+                android:fontFamily="@font/bevietnampro_semibold"
+                app:layout_constraintTop_toBottomOf="@+id/tvPassword"
+                />
 
-    <TextView
-        android:id="@+id/btnRegister"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Register"
-        android:textSize="20sp"
-        android:textColor="@color/white"
-        android:layout_marginTop="30dp"
-        android:paddingVertical="15dp"
-        android:textAlignment="center"
-        android:background="@drawable/custom_bg_login_btn"
-        android:fontFamily="@font/bevietnampro_semibold"
-        app:layout_constraintTop_toBottomOf="@+id/edtCPassword"
-        app:layout_constraintStart_toStartOf="@+id/edtCPassword"
-        app:layout_constraintEnd_toEndOf="@+id/edtCPassword"
-        />
+            <TextView
+                android:id="@+id/tvCPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirm Password"
+                android:fontFamily="@font/bevietnampro_semibold"
+                android:textColor="#A3A3A3"
+                android:textSize="15sp"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="50dp"
+                app:layout_constraintTop_toBottomOf="@+id/edtPassword"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtCPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="9dp"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:inputType="textPassword"
+                android:fontFamily="@font/bevietnampro_semibold"
+                app:layout_constraintTop_toBottomOf="@+id/tvCPassword"
+                />
+
+            <TextView
+                android:id="@+id/tvContact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contact"
+                android:fontFamily="@font/bevietnampro_semibold"
+                android:textColor="#A3A3A3"
+                android:textSize="15sp"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="50dp"
+                app:layout_constraintTop_toBottomOf="@+id/edtCPassword"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtContact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="9dp"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:inputType="number"
+                android:fontFamily="@font/bevietnampro_semibold"
+                app:layout_constraintTop_toBottomOf="@+id/tvContact"
+                />
+
+            <TextView
+                android:id="@+id/btnRegister"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Register"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:layout_marginTop="30dp"
+                android:paddingVertical="15dp"
+                android:textAlignment="center"
+                android:background="@drawable/custom_bg_login_btn"
+                android:fontFamily="@font/bevietnampro_semibold"
+                app:layout_constraintTop_toBottomOf="@+id/edtContact"
+                app:layout_constraintStart_toStartOf="@+id/edtContact"
+                app:layout_constraintEnd_toEndOf="@+id/edtContact"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,7 @@ package com.example.food_app.view.home.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.food_app.R;
+import com.example.food_app.helper.CallBack;
 import com.example.food_app.model.Category;
 
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.List;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
     private Context context;
     private List<Category> categoryList;
+    CallBack.OnCategoryCallBack listener;
 
     public CategoryAdapter(List<Category> categoryList, Context context) {
         this.categoryList = categoryList;
@@ -49,6 +52,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         holder.tvTitle.setOnClickListener(v -> {
             setCheck(category.getTitle());
+            listener.onClick(category.getTitle());
             notifyDataSetChanged();
         });
 
@@ -64,6 +68,28 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             c.setCheck(c.getTitle().equals(title));
         }
         notifyDataSetChanged();
+    }
+    public void callBackCategory(CallBack.OnCategoryCallBack listener) {
+        this.listener = listener;
+    }
+
+    public String setDefaultCheck() {
+        String rs = "";
+        boolean anyItemSelected = false;
+        for (Category c: categoryList) {
+            if (c.isCheck()) {
+                anyItemSelected = true;
+                break;
+            }
+        }
+
+        if (!anyItemSelected) {
+            Category category = categoryList.get(0);
+            category.setCheck(true);
+            rs = category.getTitle();
+        }
+        notifyDataSetChanged();
+        return rs;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
