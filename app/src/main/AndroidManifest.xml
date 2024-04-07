@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="Food App"
+        android:label="DTDFood"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Food_app.NoActionBar"
@@ -28,6 +29,9 @@
             android:name=".view.user.UserActivity"
             android:exported="false" />
         <activity
+            android:name=".view.profile.ChooseAddress"
+            android:exported="false" />
+        <activity
             android:name=".view.home.HomeActivity"
             android:exported="false" />
         <activity
@@ -42,6 +46,27 @@
         <activity
             android:name=".view.search.SearchActivity"
             android:exported="false" />
+        <activity
+            android:name=".view.food_detail.FoodDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.home.seemore.SeeMoreActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.cart.CartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.favourite.FavouriteActivity"
+            android:exported="false" />
+        <activity android:name="com.example.food_app.view.home.signout.SignoutActivity" />
+
+        <activity
+            android:name=".view.profile.ChangeInfoActivity"
+            android:exported="false" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/geo_key" />
+
 
 </application>
 
