@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -11,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewbinding.ViewBinding;
 
+import com.example.food_app.utils.Constant;
 import com.example.food_app.utils.SharePreferenceUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,6 +33,7 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
     protected FirebaseUser user;
     protected FirebaseDatabase db;
     protected DatabaseReference rf;
+    protected String address;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +45,8 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
         rf = db.getReference();
         SharePreferenceUtils.init(this);
         setContentView(binding.getRoot());
+        address = SharePreferenceUtils.getString(Constant.ADDRESS,"");
+        Log.d("cccc",address);
         initWindow();
         fullScreenCall();
         initView();

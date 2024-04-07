@@ -1,6 +1,7 @@
 package com.example.food_app.view.profile;
 
 import android.app.ProgressDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -10,6 +11,8 @@ import com.example.food_app.base.BaseActivity;
 import com.example.food_app.databinding.ActivityProfileBinding;
 import com.example.food_app.helper.CallBack;
 import com.example.food_app.model.User;
+import com.example.food_app.utils.Constant;
+import com.example.food_app.utils.SharePreferenceUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -21,6 +24,7 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
     private List<User> userList = new ArrayList<>();
     private User currentUser = null;
     ProgressDialog progressDialog;
+    String a;
     @Override
     protected ActivityProfileBinding setViewBinding() {
         return ActivityProfileBinding.inflate(LayoutInflater.from(this));
