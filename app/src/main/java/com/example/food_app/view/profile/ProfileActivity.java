@@ -1,6 +1,7 @@
 package com.example.food_app.view.profile;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import com.example.food_app.helper.CallBack;
 import com.example.food_app.model.User;
 import com.example.food_app.utils.Constant;
 import com.example.food_app.utils.SharePreferenceUtils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -24,7 +27,7 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
     private List<User> userList = new ArrayList<>();
     private User currentUser = null;
     ProgressDialog progressDialog;
-    String a;
+    private String address;
     @Override
     protected ActivityProfileBinding setViewBinding() {
         return ActivityProfileBinding.inflate(LayoutInflater.from(this));
@@ -32,6 +35,7 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
 
     @Override
     protected void initView() {
+        address = SharePreferenceUtils.getString(Constant.ADDRESS,"");
         initLoadingData();
         getUserFromFirebase(new CallBack.OnDataLoad() {
             @Override
@@ -45,6 +49,10 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
     @Override
     protected void viewListener() {
         binding.btnBack.setOnClickListener(v -> finish());
+
+        binding.tvChange.setOnClickListener(v -> {
+            startActivity(new Intent(ProfileActivity.this, ChangeInfoActivity.class));
+        });
     }
 
     private void getUserFromFirebase(CallBack.OnDataLoad listener) {
@@ -60,6 +68,15 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void updateUserToFirebase() {
+        rf.child("User").child(user != null ? user.getUid() : "").setValue(currentUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
 
             }
         });

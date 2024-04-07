@@ -126,8 +126,11 @@ public class ChooseAddress extends BaseActivity<ActivityChooseAddressBinding> im
     @Override
     protected void viewListener() {
         binding.btnDone.setOnClickListener(v -> {
-            SharePreferenceUtils.putString(Constant.ADDRESS,addressValue);
-            startActivity(new Intent(ChooseAddress.this, HomeActivity.class));
+            Intent intent = new Intent(ChooseAddress.this, ChangeInfoActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString(Constant.ADDRESS,addressValue);
+            intent.putExtras(bundle);
+            startActivity(intent);
             finishAffinity();
         });
 
