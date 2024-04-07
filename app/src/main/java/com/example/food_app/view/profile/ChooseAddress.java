@@ -68,7 +68,6 @@ import java.io.IOException;
 import java.util.List;
 
 public class ChooseAddress extends BaseActivity<ActivityChooseAddressBinding> implements OnMapReadyCallback {
-    private Context context;
     Bundle savedInstance = null;
     private boolean booleanShow = false;
 
@@ -358,20 +357,20 @@ public class ChooseAddress extends BaseActivity<ActivityChooseAddressBinding> im
                     if (location != null) {
                         LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-                        // Get the Drawable from resources
-                        Drawable dr = ContextCompat.getDrawable(ChooseAddress.this, R.drawable.ic_marker);
-                        // Convert Drawable to Bitmap
-                        Bitmap bitmap = Bitmap.createBitmap(150, 150, Bitmap.Config.ARGB_8888);
-                        Canvas canvas = new Canvas(bitmap);
-                        dr.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-                        dr.draw(canvas);
-                        // Convert Bitmap to Drawable
-                        Drawable  circleDrawable = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, 150, 150, true));
-                        // Convert Drawable to BitmapDescriptor
-                        BitmapDescriptor markerIcon = getMarkerIconFromDrawable(circleDrawable);
-
-                        googleMap.addMarker(new MarkerOptions().position(currentLatLng).title("Bạn ở đây").icon(markerIcon));
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 14f));
+//                        // Get the Drawable from resources
+//                        Drawable dr = ContextCompat.getDrawable(ChooseAddress.this, R.drawable.ic_marker);
+//                        // Convert Drawable to Bitmap
+//                        Bitmap bitmap = Bitmap.createBitmap(150, 150, Bitmap.Config.ARGB_8888);
+//                        Canvas canvas = new Canvas(bitmap);
+//                        dr.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+//                        dr.draw(canvas);
+//                        // Convert Bitmap to Drawable
+//                        Drawable  circleDrawable = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, 150, 150, true));
+//                        // Convert Drawable to BitmapDescriptor
+//                        BitmapDescriptor markerIcon = getMarkerIconFromDrawable(circleDrawable);
+//
+//                        googleMap.addMarker(new MarkerOptions().position(currentLatLng).title("Bạn ở đây").icon(markerIcon));
+//                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 14f));
                     }
                 }
             });
