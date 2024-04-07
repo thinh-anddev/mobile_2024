@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,8 +27,10 @@ import com.example.food_app.view.history.HistoryActivity;
 import com.example.food_app.view.home.adapter.CategoryAdapter;
 import com.example.food_app.view.home.adapter.FoodAdapter;
 import com.example.food_app.view.home.seemore.SeeMoreActivity;
+import com.example.food_app.view.profile.ChooseAddress;
 import com.example.food_app.view.profile.ProfileActivity;
 import com.example.food_app.view.search.SearchActivity;
+import com.example.food_app.view.user.UserActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -42,6 +45,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
     private List<Food> filterList = new ArrayList<>();
     private String cate;
     private ProgressDialog loadingDataDialog;
+    String a;
 
     @Override
     protected ActivityHomeBinding setViewBinding() {
@@ -50,6 +54,8 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
 
     @Override
     protected void initView() {
+        a = SharePreferenceUtils.getString(Constant.ADDRESS, "");
+        Log.d("cccc",a);
         if(SharePreferenceUtils.getBoolean(Constant.FIRST_INSTALL,false)) {
             foodList.addAll(Repository.listFood());
             rf.child("Foods").setValue(foodList);
@@ -93,7 +99,11 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
         });
 
         binding.clSearch.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, SearchActivity.class)));
-
+        binding.tvXoa.setOnClickListener(v -> {
+//            user.delete();
+//            startActivity(new Intent(HomeActivity.this, UserActivity.class));
+            startActivity(new Intent(HomeActivity.this, ChooseAddress.class));
+        });
 
 //        String displayName = user.getDisplayName();
 //        String email = user.getEmail();

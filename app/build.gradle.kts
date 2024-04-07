@@ -72,4 +72,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.10.0")
     //swift layout
     implementation("com.apachat:swipereveallayout-android:1.1.2")
+    //google map
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 }

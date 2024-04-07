@@ -31,6 +31,12 @@ public class SharePreferenceUtils {
     public static boolean getBoolean(String key, boolean defaultValue) {
         return mSharePref.getBoolean(key,defaultValue);
     }
+    public static int getTypeMap() {
+        return mSharePref.getInt(Constant.MAP_TYPE,0);
+    }
+    public static void setTypeMap(int typeMap) {
+        editor().putInt(Constant.MAP_TYPE, typeMap);
+    }
 
     public static void putString(String key, String value) {
         editor().putString(key,value);

@@ -63,7 +63,7 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
 
     private void initLoadingData() {
         dialog = new ProgressDialog(requireContext());
-        dialog.setMessage("Dang dang nhap");
+        dialog.setMessage("Vui lòng đợi");
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setCancelable(false);
     }
