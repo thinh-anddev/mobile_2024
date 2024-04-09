@@ -43,11 +43,12 @@ public class ChangeInfoActivity extends BaseActivity<ActivityChangeInfoBinding> 
             public void onDataLoad() {
                 dialog.cancel();
                 if (!address.equals("")) {
-                    currentUser.setAddress(address);
+                    binding.tvAddress.setText(address);
+                } else {
+                    binding.tvAddress.setText(currentUser.getAddress());
                 }
                 binding.edtName.setText(currentUser.getName());
                 binding.edtContact.setText(currentUser.getContact());
-                binding.tvAddress.setText(currentUser.getAddress());
                 listener();
             }
         });
@@ -73,6 +74,7 @@ public class ChangeInfoActivity extends BaseActivity<ActivityChangeInfoBinding> 
             updateUserToFirebase();
             Intent intent = new Intent(ChangeInfoActivity.this, ProfileActivity.class);
             startActivity(intent);
+            finishAffinity();
         });
     }
 

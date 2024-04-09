@@ -31,10 +31,10 @@ public class UserActivity extends BaseActivity<ActivityUserBinding> {
 
         new TabLayoutMediator(binding.tabUser, binding.vpUser, (tab, position) -> {
             if (position == 0) {
-                tab.setText("Login");
+                tab.setText("Đăng nhập");
                 tab.view.setBackgroundResource(R.drawable.bg_user_mode_select);
             } else {
-                tab.setText("Register");
+                tab.setText("Đăng ký");
                 tab.view.setBackgroundResource(R.drawable.bg_user_mode_unselect);
             }
         }).attach();

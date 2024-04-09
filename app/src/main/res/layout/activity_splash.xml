@@ -23,7 +23,7 @@
         android:id="@+id/btnGetStarted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get started"
+        android:text="Bắt đầu"
         android:layout_marginBottom="36dp"
         android:textSize="17sp"
         android:fontFamily="@font/bevietnampro_semibold"
