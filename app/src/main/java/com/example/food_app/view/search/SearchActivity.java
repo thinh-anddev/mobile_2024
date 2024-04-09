@@ -64,7 +64,7 @@ public class SearchActivity extends BaseActivity<ActivitySearchBinding> {
                 public void onSearch() {
                     if (searchList.size() != 0) {
                         binding.tvCountFood.setVisibility(View.VISIBLE);
-                        binding.tvCountFood.setText("Da tim thay "+ searchList.size()+" san pham cho ban");
+                        binding.tvCountFood.setText("Đã tìm thấy "+ searchList.size()+" sản phẩm cho bạn");
                         binding.rcvSearch.setVisibility(View.VISIBLE);
                         binding.layoutNoFood.setVisibility(View.GONE);
                         CommonUtils.hideSoftKeyboard(SearchActivity.this);
@@ -113,7 +113,7 @@ public class SearchActivity extends BaseActivity<ActivitySearchBinding> {
 
     private void initLoadingData() {
         dialog = new ProgressDialog(this);
-        dialog.setMessage("Dang tai data");
+        dialog.setMessage("Đang tải Data");
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setCancelable(false);
         dialog.show();
