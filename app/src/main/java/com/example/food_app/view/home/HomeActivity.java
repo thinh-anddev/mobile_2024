@@ -45,8 +45,6 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
     private List<Food> filterList = new ArrayList<>();
     private String cate;
     private ProgressDialog loadingDataDialog;
-    String a;
-
     @Override
     protected ActivityHomeBinding setViewBinding() {
         return ActivityHomeBinding.inflate(LayoutInflater.from(this));
@@ -54,14 +52,6 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
 
     @Override
     protected void initView() {
-        a = SharePreferenceUtils.getString(Constant.ADDRESS, "");
-        Log.d("cccc",a);
-        if(SharePreferenceUtils.getBoolean(Constant.FIRST_INSTALL,false)) {
-            foodList.addAll(Repository.listFood());
-            rf.child("Foods").setValue(foodList);
-            SharePreferenceUtils.putBoolean(Constant.FIRST_INSTALL,false);
-        }
-
         initLoadingData();
         getListFood(new CallBack.OnDataLoad() {
             @Override
@@ -71,6 +61,13 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
                 initFoodAdapter();
             }
         });
+        if(SharePreferenceUtils.getBoolean(Constant.FIRST_INSTALL,false)) {
+            if (foodList.size() == 0) {
+                foodList.addAll(Repository.listFood());
+                rf.child("Foods").setValue(foodList);
+            }
+            SharePreferenceUtils.putBoolean(Constant.FIRST_INSTALL,false);
+        }
         Log.d("cqq",foodList.size()+"");
     }
 

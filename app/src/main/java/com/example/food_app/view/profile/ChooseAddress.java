@@ -131,7 +131,7 @@ public class ChooseAddress extends BaseActivity<ActivityChooseAddressBinding> im
             bundle.putString(Constant.ADDRESS,addressValue);
             intent.putExtras(bundle);
             startActivity(intent);
-            finishAffinity();
+            finish();
         });
 
         binding.btnBack.setOnClickListener(v -> {
