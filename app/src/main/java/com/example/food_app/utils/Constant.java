@@ -6,4 +6,5 @@ public class Constant {
     public static final String MANUAL_LAT = "MANUAL_LAT";
     public static final String MANUAL_LON = "MANUAL_LON";
     public static final String ADDRESS = "ADDRESS";
+    public static final String CHEATING = "CHEATING";
 }

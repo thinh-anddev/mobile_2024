@@ -4,6 +4,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -12,12 +15,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewbinding.ViewBinding;
 
+import com.example.food_app.model.Cheating;
 import com.example.food_app.utils.Constant;
 import com.example.food_app.utils.SharePreferenceUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActivity {
     protected T binding;
@@ -95,5 +106,53 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         view.setSystemUiVisibility(uiOptions);
+    }
+    public void readJsonToObjectFromUrl(String urlJsonMega) {
+        Runnable myRunnable = new Runnable() {
+            private Handler myHandler = getHandler();
+
+            @Override
+            public void run() {
+                StringBuilder content = new StringBuilder();
+                try {
+                    URL myUrl = new URL(urlJsonMega);
+                    HttpURLConnection urlConnection = (HttpURLConnection) myUrl.openConnection();
+                    InputStream inputStream = urlConnection.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        content.append(line);
+                    }
+                    inputStream.close();
+                    String str = content.toString();
+                    Message msg = myHandler.obtainMessage();
+                    msg.what = 0;
+                    msg.obj = str;
+                    myHandler.sendMessage(msg);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    // Xử lý ngoại lệ ở đây nếu cần
+                }
+            }
+        };
+
+        Thread myThread = new Thread(myRunnable);
+        myThread.start();
+    }
+
+    private Handler getHandler() {
+        return new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message stringJson) {
+                if (stringJson.what == 0) {
+                    String dataJson = (String) stringJson.obj;
+                    Gson gson = new Gson();
+                    Cheating objectMegaApp = gson.fromJson(dataJson, Cheating.class);
+                    if (objectMegaApp != null && objectMegaApp.getCheating() != null) {
+                        SharePreferenceUtils.getString(Constant.CHEATING, objectMegaApp.getCheating());
+                    }
+                }
+            }
+        };
     }
 }

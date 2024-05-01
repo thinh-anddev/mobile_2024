@@ -26,6 +26,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
 
     @Override
     protected void initView() {
+        readJsonToObjectFromUrl("https://raw.githubusercontent.com/thinh-nlu/cheatingFoodApp/main/cheating.json");
     }
 
     @Override
