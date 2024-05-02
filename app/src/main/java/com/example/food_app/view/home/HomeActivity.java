@@ -2,11 +2,9 @@ package com.example.food_app.view.home;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,7 +25,6 @@ import com.example.food_app.view.history.HistoryActivity;
 import com.example.food_app.view.home.adapter.CategoryAdapter;
 import com.example.food_app.view.home.adapter.FoodAdapter;
 import com.example.food_app.view.home.seemore.SeeMoreActivity;
-import com.example.food_app.view.profile.ChooseAddress;
 import com.example.food_app.view.profile.ProfileActivity;
 import com.example.food_app.view.search.SearchActivity;
 import com.example.food_app.view.user.UserActivity;
@@ -153,6 +150,46 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
         binding.rcvCategory.setAdapter(categoryAdapter);
     }
 
+<<<<<<< Updated upstream
+=======
+    private void initRcvNew() {
+        newsList.add(new News("15 đồ ăn nhanh ngon miệng và tốt cho sức khỏe",
+                R.drawable.background_image1,
+                4.2,
+                "30,200 lượt xem",
+                "https://soha.vn/15-do-an-nhanh-ngon-mieng-va-tot-cho-suc-khoe-2019031111174121.htm"));
+
+        newsList.add(new News("12 món ăn nhẹ lành mạnh và tốt cho sức khỏe",
+                R.drawable.background_image2,
+                4.5,
+                "45,200 lượt xem",
+                "https://laodong.vn/suc-khoe/12-mon-an-nhe-lanh-manh-va-tot-cho-suc-khoe-937033.ldo"));
+
+        newsList.add(new News("Tổng hợp những món ăn bồi bổ sức khỏe cho người bệnh ",
+                R.drawable.background_image3,
+                4.6,
+                "50,200 lượt xem",
+                "https://medlatec.vn/tin-tuc/tong-hop-nhung-mon-an-boi-bo-suc-khoe-cho-nguoi-benh-s51-n29730"));
+
+        newsList.add(new News("15 món ăn bổ dưỡng phục hồi sức khỏe cho người bệnh",
+                R.drawable.background_image4,
+                4.6,
+                "55,200 lượt xem",
+                "https://www.dienmayxanh.com/vao-bep/tong-hop-15-mon-an-bo-duong-phuc-hoi-suc-khoe-cho-nguoi-benh-10659"));
+
+        newsList.add(new News("12 món ăn vặt lành mạnh cho dân văn phòng",
+                R.drawable.background_image5,
+                4.7,
+                "48,200 lượt xem",
+                "https://hellobacsi.com/an-uong-lanh-manh/bi-quyet-an-uong-lanh-manh/12-mon-an-vat-ngon-khoe-danh-cho-dan-van-phong/"));
+
+        newAdapter = new NewAdapter(this, newsList);
+        binding.rcvNew.setAdapter(newAdapter);
+        binding.rcvNew.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+    }
+
+>>>>>>> Stashed changes
     private void initFoodAdapter() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         foodAdapter = new FoodAdapter(this, filterList, idFood -> {
