@@ -121,6 +121,7 @@ public class ChooseAddress extends BaseActivity<ActivityChooseAddressBinding> im
         mapType = SharePreferenceUtils.getTypeMap();
 
         geocoder = new Geocoder(this);
+
     }
 
     @Override
@@ -131,7 +132,7 @@ public class ChooseAddress extends BaseActivity<ActivityChooseAddressBinding> im
             bundle.putString(Constant.ADDRESS,addressValue);
             intent.putExtras(bundle);
             startActivity(intent);
-            finishAffinity();
+            finish();
         });
 
         binding.btnBack.setOnClickListener(v -> {
@@ -447,7 +448,8 @@ public class ChooseAddress extends BaseActivity<ActivityChooseAddressBinding> im
                     Animation slideAnimation = AnimationUtils.loadAnimation(this, R.anim.side_slide);
                     binding.loBottomLocation.startAnimation(slideAnimation);
                 }
-                String addressValue = address != null ? address.getAddressLine(0) : "";
+                String addressVal = address != null ? address.getAddressLine(0) : "";
+                addressValue = addressVal;
                 binding.layoutBottomLocation.tvLocation.setText(addressValue);
                 binding.layoutBottomLocation.tvLat.setText(address != null ? address.getLatitude() + "°" : "");
                 binding.layoutBottomLocation.tvLong.setText(address != null ? address.getLongitude() + "°" : "");

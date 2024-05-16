@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.food_app.R;
 import com.example.food_app.base.BaseActivity;
@@ -15,6 +16,7 @@ import com.example.food_app.databinding.ActivityHomeBinding;
 import com.example.food_app.helper.CallBack;
 import com.example.food_app.model.Category;
 import com.example.food_app.model.Food;
+import com.example.food_app.model.News;
 import com.example.food_app.repository.Repository;
 import com.example.food_app.utils.Constant;
 import com.example.food_app.utils.SharePreferenceUtils;
@@ -24,6 +26,7 @@ import com.example.food_app.view.food_detail.FoodDetailActivity;
 import com.example.food_app.view.history.HistoryActivity;
 import com.example.food_app.view.home.adapter.CategoryAdapter;
 import com.example.food_app.view.home.adapter.FoodAdapter;
+import com.example.food_app.view.home.adapter.NewAdapter;
 import com.example.food_app.view.home.seemore.SeeMoreActivity;
 import com.example.food_app.view.profile.ProfileActivity;
 import com.example.food_app.view.search.SearchActivity;
@@ -38,11 +41,12 @@ import java.util.List;
 public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
     private CategoryAdapter categoryAdapter;
     private FoodAdapter foodAdapter;
+    private NewAdapter newAdapter;
     private List<Food> foodList = new ArrayList<>();
     private List<Food> filterList = new ArrayList<>();
+    private List<News> newsList = new ArrayList<>();
     private String cate;
     private ProgressDialog loadingDataDialog;
-    String a;
 
     @Override
     protected ActivityHomeBinding setViewBinding() {
@@ -51,14 +55,6 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
 
     @Override
     protected void initView() {
-        a = SharePreferenceUtils.getString(Constant.ADDRESS, "");
-        Log.d("cccc",a);
-        if(SharePreferenceUtils.getBoolean(Constant.FIRST_INSTALL,false)) {
-            foodList.addAll(Repository.listFood());
-            rf.child("Foods").setValue(foodList);
-            SharePreferenceUtils.putBoolean(Constant.FIRST_INSTALL,false);
-        }
-
         initLoadingData();
         getListFood(new CallBack.OnDataLoad() {
             @Override
@@ -66,17 +62,26 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
                 loadingDataDialog.cancel();
                 initRcvCategory();
                 initFoodAdapter();
+                initRcvNew();
             }
         });
-        Log.d("cqq",foodList.size()+"");
+        if (SharePreferenceUtils.getBoolean(Constant.FIRST_INSTALL, false)) {
+            if(SharePreferenceUtils.getString(Constant.CHEATING,"false").equals("false")) {
+                if (foodList.size() == 0) {
+                    foodList.addAll(Repository.listFood());
+                    rf.child("Foods").setValue(foodList);
+                }
+            }
+            SharePreferenceUtils.putBoolean(Constant.FIRST_INSTALL, false);
+        }
+        Log.d("cqq", foodList.size() + "");
     }
-
 
 
     @Override
     protected void viewListener() {
         binding.btnHistory.setOnClickListener(v -> {
-           startActivity(new Intent(HomeActivity.this, HistoryActivity.class));
+            startActivity(new Intent(HomeActivity.this, HistoryActivity.class));
         });
 
         binding.btnProfile.setOnClickListener(v -> {
@@ -97,9 +102,9 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
 
         binding.clSearch.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, SearchActivity.class)));
         binding.tvXoa.setOnClickListener(v -> {
-//            user.delete();
-//            startActivity(new Intent(HomeActivity.this, UserActivity.class));
-            startActivity(new Intent(HomeActivity.this, ChooseAddress.class));
+            user.delete();
+            startActivity(new Intent(HomeActivity.this, UserActivity.class));
+            //startActivity(new Intent(HomeActivity.this, ChooseAddress.class));
         });
 
 //        String displayName = user.getDisplayName();
@@ -114,7 +119,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
         rf.child("Foods").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot d: snapshot.getChildren()) {
+                for (DataSnapshot d : snapshot.getChildren()) {
                     Food food = d.getValue(Food.class);
                     foodList.add(food);
                 }
@@ -122,7 +127,8 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
     }
 
@@ -149,9 +155,6 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
         binding.rcvCategory.setLayoutManager(linearLayoutManager);
         binding.rcvCategory.setAdapter(categoryAdapter);
     }
-
-<<<<<<< Updated upstream
-=======
     private void initRcvNew() {
         newsList.add(new News("15 đồ ăn nhanh ngon miệng và tốt cho sức khỏe",
                 R.drawable.background_image1,
@@ -183,19 +186,42 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
                 "48,200 lượt xem",
                 "https://hellobacsi.com/an-uong-lanh-manh/bi-quyet-an-uong-lanh-manh/12-mon-an-vat-ngon-khoe-danh-cho-dan-van-phong/"));
 
+        newsList.add(new News("15 đồ ăn nhanh ngon miệng và tốt cho sức khỏe",
+                R.drawable.background_bottom_location,
+                4.2,
+                "30,200 lượt xem",
+                "https://soha.vn/15-do-an-nhanh-ngon-mieng-va-tot-cho-suc-khoe-2019031111174121.htm"));
+
+        newsList.add(new News("15 đồ ăn nhanh ngon miệng và tốt cho sức khỏe",
+                R.drawable.background_bottom_location,
+                4.2,
+                "30,200 lượt xem",
+                "https://soha.vn/15-do-an-nhanh-ngon-mieng-va-tot-cho-suc-khoe-2019031111174121.htm"));
+
+        newsList.add(new News("haha",
+                R.drawable.background_bottom_location,
+                4.5,
+                "30,200 lượt xem",
+                "https://www.bhf.org.uk/informationsupport/risk-factors/high-blood-pressure"));
+
+        newsList.add(new News("haha",
+                R.drawable.background_bottom_location,
+                4.5,
+                "30,200 lượt xem",
+                "https://www.bhf.org.uk/informationsupport/risk-factors/high-blood-pressure"));
+
         newAdapter = new NewAdapter(this, newsList);
         binding.rcvNew.setAdapter(newAdapter);
         binding.rcvNew.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
     }
 
->>>>>>> Stashed changes
     private void initFoodAdapter() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         foodAdapter = new FoodAdapter(this, filterList, idFood -> {
             Intent intent = new Intent(HomeActivity.this, FoodDetailActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putInt("idFood",idFood);
+            bundle.putInt("idFood", idFood);
             intent.putExtras(bundle);
             startActivity(intent);
         });
@@ -206,7 +232,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
 
     private void filterFoodByCategory(String cate) {
         filterList.clear();
-        for (Food f: foodList) {
+        for (Food f : foodList) {
             if (f.getCategory().equals(cate)) {
                 filterList.add(f);
             }

@@ -24,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ChangeInfoActivity extends BaseActivity<ActivityChangeInfoBinding> {
     private User currentUser =null ;
-    private String address;
+    private String address = "";
     ProgressDialog dialog;
     @Override
     protected ActivityChangeInfoBinding setViewBinding() {
@@ -42,10 +42,13 @@ public class ChangeInfoActivity extends BaseActivity<ActivityChangeInfoBinding> 
             @Override
             public void onDataLoad() {
                 dialog.cancel();
-                currentUser.setAddress(address);
+                if (!address.equals("")) {
+                    binding.tvAddress.setText(address);
+                } else {
+                    binding.tvAddress.setText(currentUser.getAddress());
+                }
                 binding.edtName.setText(currentUser.getName());
                 binding.edtContact.setText(currentUser.getContact());
-                binding.tvAddress.setText(currentUser.getAddress());
                 listener();
             }
         });
@@ -67,9 +70,11 @@ public class ChangeInfoActivity extends BaseActivity<ActivityChangeInfoBinding> 
         binding.btnDone.setOnClickListener(v -> {
             currentUser.setName(binding.edtName.getText().equals("") ? currentUser.getName() : binding.edtName.getText()+"");
             currentUser.setContact(binding.edtContact.getText().equals("") ? currentUser.getContact() : binding.edtContact.getText()+"");
+            currentUser.setAddress(binding.tvAddress.getText()+"");
             updateUserToFirebase();
             Intent intent = new Intent(ChangeInfoActivity.this, ProfileActivity.class);
             startActivity(intent);
+            finishAffinity();
         });
     }
 
