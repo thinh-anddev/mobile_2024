@@ -186,29 +186,6 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
                 "48,200 lượt xem",
                 "https://hellobacsi.com/an-uong-lanh-manh/bi-quyet-an-uong-lanh-manh/12-mon-an-vat-ngon-khoe-danh-cho-dan-van-phong/"));
 
-        newsList.add(new News("15 đồ ăn nhanh ngon miệng và tốt cho sức khỏe",
-                R.drawable.background_bottom_location,
-                4.2,
-                "30,200 lượt xem",
-                "https://soha.vn/15-do-an-nhanh-ngon-mieng-va-tot-cho-suc-khoe-2019031111174121.htm"));
-
-        newsList.add(new News("15 đồ ăn nhanh ngon miệng và tốt cho sức khỏe",
-                R.drawable.background_bottom_location,
-                4.2,
-                "30,200 lượt xem",
-                "https://soha.vn/15-do-an-nhanh-ngon-mieng-va-tot-cho-suc-khoe-2019031111174121.htm"));
-
-        newsList.add(new News("haha",
-                R.drawable.background_bottom_location,
-                4.5,
-                "30,200 lượt xem",
-                "https://www.bhf.org.uk/informationsupport/risk-factors/high-blood-pressure"));
-
-        newsList.add(new News("haha",
-                R.drawable.background_bottom_location,
-                4.5,
-                "30,200 lượt xem",
-                "https://www.bhf.org.uk/informationsupport/risk-factors/high-blood-pressure"));
 
         newAdapter = new NewAdapter(this, newsList);
         binding.rcvNew.setAdapter(newAdapter);

@@ -53,9 +53,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         }
 
         if (cart.isCheck()) {
-            holder.clView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.custom_bg_cart_check));
+            holder.clView.setBackground(context.getResources().getDrawable(R.drawable.custom_bg_cart_check));
         } else {
-            holder.clView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.custom_bg_cart_uncheck));
+            holder.clView.setBackground(context.getResources().getDrawable(R.drawable.custom_bg_cart_uncheck));
         }
         curPrice = Double.valueOf(food.getPrice()).intValue();
         curCount = cart.getNumber();
@@ -96,6 +96,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
         holder.clView.setOnClickListener(v -> {
             cart.setCheck(!cart.isCheck());
+            listener.onOrder(cart);
             notifyDataSetChanged();
         });
     }
@@ -114,6 +115,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     public interface IFoodListener {
         void onAddFar(Food food);
         void onDeleteFood();
+        void onOrder(Cart cart);
     }
 
     public class CartViewHolder extends RecyclerView.ViewHolder {

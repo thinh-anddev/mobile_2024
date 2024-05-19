@@ -17,24 +17,32 @@ import com.example.food_app.databinding.ActivityCartBinding;
 import com.example.food_app.helper.CallBack;
 import com.example.food_app.model.Cart;
 import com.example.food_app.model.Food;
+import com.example.food_app.model.Order;
+import com.example.food_app.model.User;
 import com.example.food_app.view.cart.adapter.CartAdapter;
-import com.example.food_app.view.favourite.FavouriteActivity;
-import com.example.food_app.view.food_detail.FoodDetailActivity;
-import com.example.food_app.view.home.HomeActivity;
-import com.example.food_app.view.home.adapter.FoodAdapter;
 import com.example.food_app.view.home.seemore.SeeMoreActivity;
+import com.example.food_app.view.order.OrderActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 public class CartActivity extends BaseActivity<ActivityCartBinding> {
     private List<Cart> cartList = new ArrayList<>();
     private List<Food> favouriteList = new ArrayList<>();
+    private List<User> userList = new ArrayList<>();
+    private List<Order> listOrderTemp = new ArrayList<>();
+    private Order orderData;
+    private User currentUser;
     private ProgressDialog dialogLoading;
     private CartAdapter cartAdapter;
     @Override
@@ -46,6 +54,10 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
     protected void initView() {
         binding.tvClickHere.setText(Html.fromHtml("<font color=#FA4A0C>Nhấn vào đây </font> <font color=#000000>để đặt thức ăn thôi nào</font>"));
         initLoadingData();
+        getUserFromFirebase(new CallBack.OnDataLoad() {
+            @Override
+            public void onDataLoad() {}
+        });
         getListCartFromFirebase(new CallBack.OnDataLoad() {
             @Override
             public void onDataLoad() {
@@ -76,6 +88,11 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
         binding.btnClearAll.setOnClickListener(v -> {
             cartList.clear();
             updateCartInFirebase();
+        });
+        binding.btnCreateOrder.setOnClickListener(v -> {
+            addManyItemProduct();
+            buyManyItemProduct();
+            Log.d("kkkk",listOrderTemp.size()+"");
         });
     }
 
@@ -109,9 +126,49 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
             public void onDeleteFood() {
                 setUpCartScreen();
             }
+
+            @Override
+            public void onOrder(Cart cart) {
+
+            }
         });
         binding.rcvCart.setLayoutManager(linearLayoutManager);
         binding.rcvCart.setAdapter(cartAdapter);
+    }
+
+    private void addManyItemProduct() {
+        orderData = new Order();
+        List<Cart> listFoodTemp = new ArrayList<>();
+        Iterator<Cart> iterator = cartList.iterator();
+        while (iterator.hasNext()) {
+            Cart c = iterator.next();
+            if (c.isCheck()) {
+                iterator.remove();
+                listFoodTemp.add(c);
+            }
+        }
+
+        Order order = new Order(
+                currentUser.getName(),
+                currentUser.getAddress(),
+                currentUser.getContact(),
+                currentUser.getEmail(),
+                dateCurrent() + " " + timeCurrent(),
+                listFoodTemp,
+                "Chưa thanh toán",
+                genUUID()
+        );
+        orderData = order;
+    }
+
+    private void buyManyItemProduct() {
+        //buy
+        rf.child("Order").child(user.getUid()).child(genUUID()).setValue(orderData).addOnCompleteListener(task -> {
+            Toast.makeText(this, "Tạo đơn hàng", Toast.LENGTH_SHORT).show();
+        });
+        Intent intent = new Intent(this, OrderActivity.class);
+        intent.putExtra("order",orderData);
+        startActivity(intent);
     }
 
     private void getListCartFromFirebase(CallBack.OnDataLoad listener) {
@@ -173,6 +230,40 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
+    }
+
+    private void getUserFromFirebase(CallBack.OnDataLoad listener) {
+        userList.clear();
+        rf.child("Users").child(user != null ? user.getUid() : "").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    currentUser = snapshot.getValue(User.class);
+                }
+                listener.onDataLoad();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private String dateCurrent() {
+        return new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
+    }
+
+    private String timeCurrent() {
+        return new SimpleDateFormat("hh:mm", Locale.getDefault()).format(new Date());
+    }
+
+    private String genUUID() {
+        // Tạo một UUID ngẫu nhiên
+        UUID uuid = UUID.randomUUID();
+        // Chuyển UUID thành chuỗi và lấy một phần của nó làm mã số hóa đơn
+        String invoiceNumber = uuid.toString().replace("-", "").substring(0, 12).toUpperCase();
+        return invoiceNumber;
     }
 
     @Override
