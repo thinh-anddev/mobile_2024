@@ -1,6 +1,8 @@
 package com.example.food_app.model;
 
-public class Cart {
+import java.io.Serializable;
+
+public class Cart implements Serializable {
     private Food food;
     private int number;
     private boolean isCheck;

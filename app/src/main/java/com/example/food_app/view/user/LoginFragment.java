@@ -11,7 +11,9 @@ import androidx.annotation.Nullable;
 
 import com.example.food_app.base.BaseFragment;
 import com.example.food_app.databinding.FragmentLoginBinding;
+import com.example.food_app.utils.CommonUtils;
 import com.example.food_app.view.home.HomeActivity;
+import com.example.food_app.view.internet.InternetActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -38,25 +40,29 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
     @Override
     protected void viewListener() {
         binding.btnLogin.setOnClickListener(v -> {
-            dialog.show();
-            email = String.valueOf(binding.edtUsername.getText());
-            password = String.valueOf(binding.edtPassword.getText());
-            if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
-                Toast.makeText(requireContext(), "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-                dialog.cancel();
+            if (CommonUtils.isNetworkAvailable(requireContext())) {
+                dialog.show();
+                email = String.valueOf(binding.edtUsername.getText());
+                password = String.valueOf(binding.edtPassword.getText());
+                if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
+                    Toast.makeText(requireContext(), "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                    dialog.cancel();
+                } else {
+                    mAuth.signInWithEmailAndPassword(email, password)
+                            .addOnCompleteListener( task -> {
+                                if (task.isSuccessful()) {
+                                    //FirebaseUser user = mAuth.getCurrentUser();
+                                    startActivity(new Intent(requireActivity(), HomeActivity.class));
+                                    Toast.makeText(requireContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                                    dialog.cancel();
+                                } else {
+                                    Toast.makeText(requireContext(), "Tên đăng nhập hoặc mật khẩu không đúng", Toast.LENGTH_SHORT).show();
+                                    dialog.cancel();
+                                }
+                            });
+                }
             } else {
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener( task -> {
-                            if (task.isSuccessful()) {
-                                //FirebaseUser user = mAuth.getCurrentUser();
-                                startActivity(new Intent(requireActivity(), HomeActivity.class));
-                                Toast.makeText(requireContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                                dialog.cancel();
-                            } else {
-                                Toast.makeText(requireContext(), "Tên đăng nhập hoặc mật khẩu không đúng", Toast.LENGTH_SHORT).show();
-                                dialog.cancel();
-                            }
-                        });
+                startActivity(new Intent(requireActivity(), InternetActivity.class));
             }
         });
     }

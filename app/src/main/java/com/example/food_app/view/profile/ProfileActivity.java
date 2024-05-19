@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
-    private List<User> userList = new ArrayList<>();
     private User currentUser = null;
     ProgressDialog progressDialog;
     private String address;
@@ -56,7 +55,6 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
     }
 
     private void getUserFromFirebase(CallBack.OnDataLoad listener) {
-        userList.clear();
         rf.child("Users").child(user != null ? user.getUid() : "").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
