@@ -56,7 +56,7 @@
                 android:id="@+id/tvInformation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Thông tin cuả bạn"
+                android:text="Thông tin của bạn"
                 android:textColor="@color/black"
                 android:fontFamily="@font/bevietnampro_semibold"
                 android:textSize="15sp"
