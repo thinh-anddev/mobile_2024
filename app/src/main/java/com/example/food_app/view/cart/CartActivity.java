@@ -19,6 +19,7 @@ import com.example.food_app.model.Cart;
 import com.example.food_app.model.Food;
 import com.example.food_app.model.Order;
 import com.example.food_app.model.User;
+import com.example.food_app.utils.Constant;
 import com.example.food_app.view.cart.adapter.CartAdapter;
 import com.example.food_app.view.home.seemore.SeeMoreActivity;
 import com.example.food_app.view.order.OrderActivity;
@@ -155,7 +156,7 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
                 currentUser.getEmail(),
                 dateCurrent() + " " + timeCurrent(),
                 listFoodTemp,
-                "Chưa thanh toán",
+                Constant.NOT_CHECK_OUT,
                 genUUID()
         );
         orderData = order;
@@ -167,7 +168,10 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
             Toast.makeText(this, "Tạo đơn hàng", Toast.LENGTH_SHORT).show();
         });
         Intent intent = new Intent(this, OrderActivity.class);
-        intent.putExtra("order",orderData);
+        Bundle bundle = new Bundle();
+        bundle.putString("actionOrder", Constant.NOT_CHECK_OUT);
+        bundle.putSerializable("order",orderData);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 

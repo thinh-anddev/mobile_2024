@@ -14,6 +14,7 @@ import com.example.food_app.R;
 import com.example.food_app.model.Cart;
 import com.example.food_app.model.Food;
 import com.example.food_app.model.Order;
+import com.example.food_app.utils.Constant;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
     Context context;
