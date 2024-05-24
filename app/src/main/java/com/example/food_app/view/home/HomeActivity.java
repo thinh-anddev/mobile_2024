@@ -1,12 +1,16 @@
 package com.example.food_app.view.home;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,6 +51,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
     private List<News> newsList = new ArrayList<>();
     private String cate;
     private ProgressDialog loadingDataDialog;
+    private int NOTIFICATIONS_PERMISSION_REQUEST_CODE = 112;
 
     @Override
     protected ActivityHomeBinding setViewBinding() {
@@ -55,6 +60,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
 
     @Override
     protected void initView() {
+        requestPermission();
         initLoadingData();
         getListFood(new CallBack.OnDataLoad() {
             @Override
@@ -223,5 +229,18 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
         loadingDataDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         loadingDataDialog.setCancelable(false);
         loadingDataDialog.show();
+    }
+
+    private void requestPermission() {
+        if (Build.VERSION.SDK_INT > 32) {
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[] { Manifest.permission.POST_NOTIFICATIONS },
+                        NOTIFICATIONS_PERMISSION_REQUEST_CODE);
+            }
+        }
     }
 }
