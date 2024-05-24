@@ -3,7 +3,10 @@ package com.example.food_app.view.order;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,10 +18,15 @@ import com.example.food_app.model.Cart;
 import com.example.food_app.model.Order;
 import com.example.food_app.model.User;
 import com.example.food_app.utils.Constant;
+import com.example.food_app.view.home.HomeActivity;
 import com.example.food_app.view.home.adapter.OrderAdapter;
+import com.example.food_app.view.profile.ChangeInfoActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class OrderActivity extends BaseActivity<ActivityOrderBinding> {
     private User currentUser = null;
@@ -45,18 +53,33 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> {
             order = (Order) bundle.getSerializable("order");
             actionOrder = bundle.getString("actionOrder");
         }
-
         initViewOrder();
-
         initAdapter();
-
+        bindEvent();
         binding.tvSumValue.setText(String.valueOf(countSumPrice(order)));
     }
 
     @Override
-    protected void viewListener() {
+    protected void viewListener() {}
+    private void bindEvent() {
         binding.btnBack.setOnClickListener(v -> {
             onBackPressed();
+        });
+
+        binding.cvProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ChangeInfoActivity.class);
+            intent.putExtra("INVOICE_NUMBER",order.getInvoiceNumber());
+            intent.putExtra("FROM","ORDER");
+            startActivity(intent);
+            finish();
+        });
+
+        binding.cancelOrder.setOnClickListener(v -> {
+            order.setStatus(Constant.CANCELLED);
+            updateOrder(order);
+            Toast.makeText(this, "Đã hủy", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, HomeActivity.class));
+            finish();
         });
     }
 
@@ -67,14 +90,26 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> {
     }
     private void initViewOrder() {
         switch (actionOrder) {
-            case Constant.NOT_CHECK_OUT:
-                binding.btnStartOrder.setText("Thanh toán");
+            case Constant.AWAITING_PAYMENT:
+                binding.btnStartOrder.setVisibility(View.VISIBLE);
+                binding.llButton.setVisibility(View.GONE);
+                binding.cancelOrder.setVisibility(View.GONE);
                 break;
-            case Constant.CHECK_OUT:
-                binding.btnStartOrder.setText("Đặt lại");
+            case Constant.PENDING:
+                binding.btnStartOrder.setVisibility(View.GONE);
+                binding.llButton.setVisibility(View.GONE);
+                binding.cancelOrder.setVisibility(View.VISIBLE);
                 break;
-//            default:
-//                binding.btnStartOrder.setText("Thanh toán");
+            case Constant.DELIVERED:
+                binding.btnStartOrder.setVisibility(View.GONE);
+                binding.llButton.setVisibility(View.VISIBLE);
+                binding.cancelOrder.setVisibility(View.GONE);
+                break;
+            case Constant.CANCELLED:
+                binding.btnStartOrder.setVisibility(View.GONE);
+                binding.llButton.setVisibility(View.GONE);
+                binding.cancelOrder.setVisibility(View.GONE);
+                break;
         }
     }
 
@@ -94,11 +129,28 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> {
             }
         });
     }
+
+    private void updateOrder(Order order) {
+        Log.d("getInvoiceNumber",order.getInvoiceNumber());
+        rf.child("Order").child(user.getUid()).child(order.getInvoiceNumber()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    rf.child("Order").child(user.getUid()).child(order.getInvoiceNumber()).setValue(order);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
     private void setUpProfile() {
-        binding.tvName.setText(currentUser.getName());
-        binding.tvEmail.setText(currentUser.getEmail());
-        binding.tvContact.setText(currentUser.getContact());
-        binding.tvAddress.setText(!currentUser.getAddress().equals("") ? currentUser.getAddress() : "Hãy cập nhật đỉa chỉ của bạn");
+        binding.tvName.setText(order.getNameUser());
+        binding.tvEmail.setText(order.getEmail());
+        binding.tvContact.setText(order.getContact());
+        binding.tvAddress.setText(!order.getAddress().equals("") ? order.getAddress() : "Hãy cập nhật đỉa chỉ của bạn");
     }
 
     private double countSumPrice(Order order) {

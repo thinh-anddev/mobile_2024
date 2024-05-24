@@ -39,7 +39,7 @@ public class SharePreferenceUtils {
     }
 
     public static void putString(String key, String value) {
-        editor().putString(key,value);
+        editor().putString(key,value).apply();
     }
 
     public static String getString(String key, String defaultValue) {

@@ -37,9 +37,22 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
         Order order = orderList.get(position);
 
         String status = "";
-        if (order.getStatus().equals(Constant.CHECK_OUT)) {
-            status = "Đã thanh toán";
-        } else status = "Chưa thanh toán";
+        switch (order.getStatus()) {
+            case Constant.AWAITING_PAYMENT:
+                status = "Đang chờ thanh toán";
+                break;
+            case Constant.PENDING:
+                status = "Đang giao hàng";
+                break;
+            case Constant.DELIVERED:
+                status = "Đã giao hàng";
+                break;
+            case Constant.CANCELLED:
+                status = "Đã hủy";
+                break;
+//            default:
+//                binding.btnStartOrder.setText("Thanh toán");
+        }
 
         holder.invoiceNumber.setText(order.getInvoiceNumber()+"("+status+")");
         holder.tvDate.setText(order.getTime());

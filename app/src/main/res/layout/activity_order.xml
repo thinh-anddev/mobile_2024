@@ -254,48 +254,67 @@
         app:layout_constraintEnd_toEndOf="parent"
         />
 
-<!--    <LinearLayout-->
-<!--        android:id="@+id/llButton"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        android:visibility="gone"-->
-<!--        android:layout_marginBottom="20dp"-->
-<!--        android:gravity="center"-->
-<!--        android:weightSum="3"-->
-<!--        >-->
+    <LinearLayout
+        android:id="@+id/llButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:weightSum="3"
+        >
 
-<!--        <TextView-->
-<!--            android:id="@+id/btnClearAll"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Xóa tất cả"-->
-<!--            android:textSize="16sp"-->
-<!--            android:textColor="#7F7F7F"-->
-<!--            android:paddingVertical="15dp"-->
-<!--            android:textAlignment="center"-->
-<!--            android:layout_weight="1"-->
-<!--            android:layout_marginEnd="5dp"-->
-<!--            android:fontFamily="@font/bevietnampro_semibold"-->
-<!--            />-->
+        <TextView
+            android:id="@+id/btnClearAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hủy đơn"
+            android:textSize="16sp"
+            android:textColor="#7F7F7F"
+            android:paddingVertical="15dp"
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp"
+            android:fontFamily="@font/bevietnampro_semibold"
+            />
 
-<!--        <TextView-->
-<!--            android:id="@+id/btnCreateOrder"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Đặt lại"-->
-<!--            android:textSize="16sp"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:paddingVertical="15dp"-->
-<!--            android:textAlignment="center"-->
-<!--            android:layout_weight="1"-->
-<!--            android:layout_marginStart="5dp"-->
-<!--            android:background="@drawable/custom_bg_login_btn"-->
-<!--            android:fontFamily="@font/bevietnampro_semibold"-->
-<!--            />-->
+        <TextView
+            android:id="@+id/btnCreateOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đặt lại"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:paddingVertical="15dp"
+            android:textAlignment="center"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/custom_bg_login_btn"
+            android:fontFamily="@font/bevietnampro_semibold"
+            />
 
-<!--    </LinearLayout>-->
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/cancelOrder"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Hủy đơn"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:paddingVertical="15dp"
+        android:textAlignment="center"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/custom_bg_cancel_btn"
+        android:fontFamily="@font/bevietnampro_semibold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

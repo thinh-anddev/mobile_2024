@@ -149,30 +149,38 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
             }
         }
 
-        Order order = new Order(
-                currentUser.getName(),
-                currentUser.getAddress(),
-                currentUser.getContact(),
-                currentUser.getEmail(),
-                dateCurrent() + " " + timeCurrent(),
-                listFoodTemp,
-                Constant.NOT_CHECK_OUT,
-                genUUID()
-        );
-        orderData = order;
+        if (listFoodTemp != null && listFoodTemp.size() != 0) {
+            Order order = new Order(
+                    currentUser.getName(),
+                    currentUser.getAddress(),
+                    currentUser.getContact(),
+                    currentUser.getEmail(),
+                    dateCurrent() + " " + timeCurrent(),
+                    listFoodTemp,
+                    Constant.AWAITING_PAYMENT,
+                    genUUID()
+            );
+            orderData = order;
+        }
     }
 
     private void buyManyItemProduct() {
-        //buy
-        rf.child("Order").child(user.getUid()).child(genUUID()).setValue(orderData).addOnCompleteListener(task -> {
-            Toast.makeText(this, "Tạo đơn hàng", Toast.LENGTH_SHORT).show();
-        });
-        Intent intent = new Intent(this, OrderActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("actionOrder", Constant.NOT_CHECK_OUT);
-        bundle.putSerializable("order",orderData);
-        intent.putExtras(bundle);
-        startActivity(intent);
+        if (orderData.getFoodList() != null && orderData.getFoodList().size() != 0) {
+            //buy
+            rf.child("Order").child(user.getUid()).child(orderData.getInvoiceNumber()).setValue(orderData).addOnCompleteListener(task -> {
+                Toast.makeText(this, "Tạo đơn hàng", Toast.LENGTH_SHORT).show();
+            });
+            Intent intent = new Intent(this, OrderActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("actionOrder", orderData.getStatus());
+            bundle.putSerializable("order",orderData);
+            intent.putExtras(bundle);
+            startActivity(intent);
+            finish();
+        } else {
+            Toast.makeText(this, "Chưa có món ăn được chọn", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void getListCartFromFirebase(CallBack.OnDataLoad listener) {

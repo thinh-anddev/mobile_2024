@@ -56,8 +56,6 @@ public abstract class BaseActivity<T extends ViewBinding> extends AppCompatActiv
         rf = db.getReference();
         SharePreferenceUtils.init(this);
         setContentView(binding.getRoot());
-        address = SharePreferenceUtils.getString(Constant.ADDRESS,"");
-        Log.d("cccc",address);
         initWindow();
         fullScreenCall();
         initView();
