@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
-    private List<Cart> cartList = new ArrayList<>();
+    private List<Cart> cartList;
     private ViewBinder viewBinder = new ViewBinder();
     private Context context;
     IFoodListener listener;
@@ -61,7 +61,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         curCount = cart.getNumber();
         viewBinder.bind(holder.swipeLayout,String.valueOf(food.getId()));
         holder.tvTitle.setText(food.getTitle());
-        holder.tvPrice.setText(formatCost(curPrice));
+        holder.tvPrice.setText(formatCost(curPrice * curCount) );
         holder.imvFood.setImageResource(food.getPhoto());
         holder.tvCount.setText(String.valueOf(curCount));
 

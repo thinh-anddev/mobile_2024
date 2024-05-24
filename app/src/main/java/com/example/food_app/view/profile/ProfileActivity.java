@@ -50,7 +50,10 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
         binding.btnBack.setOnClickListener(v -> finish());
 
         binding.tvChange.setOnClickListener(v -> {
-            startActivity(new Intent(ProfileActivity.this, ChangeInfoActivity.class));
+            Intent intent = new Intent(ProfileActivity.this, ChangeInfoActivity.class);
+            intent.putExtra("FROM","PROFILE");
+            intent.putExtra("INVOICE_NUMBER","");
+            startActivity(intent);
         });
     }
 
