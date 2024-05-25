@@ -1,6 +1,8 @@
 package com.example.food_app.view.user;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,8 @@ import androidx.annotation.Nullable;
 import com.example.food_app.base.BaseFragment;
 import com.example.food_app.databinding.FragmentLoginBinding;
 import com.example.food_app.utils.CommonUtils;
+import com.example.food_app.utils.Constant;
+import com.example.food_app.utils.SharePreferenceUtils;
 import com.example.food_app.view.home.HomeActivity;
 import com.example.food_app.view.internet.InternetActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,9 +55,8 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
                     mAuth.signInWithEmailAndPassword(email, password)
                             .addOnCompleteListener( task -> {
                                 if (task.isSuccessful()) {
+                                    showAlertDialog();
                                     //FirebaseUser user = mAuth.getCurrentUser();
-                                    startActivity(new Intent(requireActivity(), HomeActivity.class));
-                                    Toast.makeText(requireContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                                     dialog.cancel();
                                 } else {
                                     Toast.makeText(requireContext(), "Tên đăng nhập hoặc mật khẩu không đúng", Toast.LENGTH_SHORT).show();
@@ -65,6 +68,31 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
                 startActivity(new Intent(requireActivity(), InternetActivity.class));
             }
         });
+    }
+
+    private void showAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Bạn có muốn lưu mật khẩu?")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharePreferenceUtils.putString(Constant.USERNAME,email);
+                        SharePreferenceUtils.putString(Constant.PASSWORD,password);
+                        startActivity(new Intent(requireActivity(), HomeActivity.class));
+                        Toast.makeText(requireContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(requireActivity(), HomeActivity.class));
+                        Toast.makeText(requireContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void initLoadingData() {
