@@ -45,6 +45,9 @@
             android:name=".view.order.OrderActivity"
             android:exported="false" />
         <activity
+            android:name=".view.order.OrderSuccessActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.search.SearchActivity"
             android:exported="false" />
         <activity

@@ -85,6 +85,9 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> {
 
         binding.btnStartOrder.setOnClickListener(v -> {
             sendNotification();
+            order.setStatus(Constant.PENDING);
+            updateOrder(order);
+            startActivity(new Intent(OrderActivity.this, OrderSuccessActivity.class));
         });
 
         binding.cvProfile.setOnClickListener(v -> {
