@@ -119,21 +119,25 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> {
                 binding.btnStartOrder.setVisibility(View.VISIBLE);
                 binding.llButton.setVisibility(View.GONE);
                 binding.cancelOrder.setVisibility(View.GONE);
+                binding.cvProfile.setEnabled(true);
                 break;
             case Constant.PENDING:
                 binding.btnStartOrder.setVisibility(View.GONE);
                 binding.llButton.setVisibility(View.GONE);
                 binding.cancelOrder.setVisibility(View.VISIBLE);
+                binding.cvProfile.setEnabled(false);
                 break;
             case Constant.DELIVERED:
                 binding.btnStartOrder.setVisibility(View.GONE);
                 binding.llButton.setVisibility(View.VISIBLE);
                 binding.cancelOrder.setVisibility(View.GONE);
+                binding.cvProfile.setEnabled(false);
                 break;
             case Constant.CANCELLED:
                 binding.btnStartOrder.setVisibility(View.GONE);
                 binding.llButton.setVisibility(View.GONE);
                 binding.cancelOrder.setVisibility(View.GONE);
+                binding.cvProfile.setEnabled(false);
                 break;
 
         }
@@ -221,7 +225,6 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
-
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling

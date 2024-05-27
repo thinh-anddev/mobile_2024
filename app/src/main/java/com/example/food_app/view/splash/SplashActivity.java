@@ -49,6 +49,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> {
                                     startActivity(new Intent(SplashActivity.this, HomeActivity.class));
                                     Toast.makeText(SplashActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                                 } else {
+                                    startActivity(new Intent(SplashActivity.this, UserActivity.class));
                                     Toast.makeText(SplashActivity.this, "Tên đăng nhập hoặc mật khẩu không đúng", Toast.LENGTH_SHORT).show();
                                 }
                             });

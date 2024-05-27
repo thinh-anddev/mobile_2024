@@ -11,9 +11,11 @@ import androidx.annotation.NonNull;
 import com.example.food_app.base.BaseActivity;
 import com.example.food_app.databinding.ActivityProfileBinding;
 import com.example.food_app.helper.CallBack;
+import com.example.food_app.model.Order;
 import com.example.food_app.model.User;
 import com.example.food_app.utils.Constant;
 import com.example.food_app.utils.SharePreferenceUtils;
+import com.example.food_app.view.splash.SplashActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +29,9 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
     private User currentUser = null;
     ProgressDialog progressDialog;
     private String address;
+    Order order;
+
+    private List<Order> listOrderPending = new ArrayList<>();
     @Override
     protected ActivityProfileBinding setViewBinding() {
         return ActivityProfileBinding.inflate(LayoutInflater.from(this));
@@ -54,6 +59,18 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
             intent.putExtra("FROM","PROFILE");
             intent.putExtra("INVOICE_NUMBER","");
             startActivity(intent);
+        });
+
+        binding.btnChangePassword.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfileActivity.this, ChangePasswordActivity.class);
+            startActivity(intent);
+        });
+
+        binding.btnSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut();
+            }
         });
     }
 
@@ -95,5 +112,16 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setCancelable(false);
         progressDialog.show();
+    }
+
+    private void signOut() {
+        mAuth.signOut();
+        // Chuyển hướng người dùng đến màn hình đăng nhập hoặc màn hình chính
+        Intent intent = new Intent(ProfileActivity.this, SplashActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        SharePreferenceUtils.putString(Constant.USERNAME,"");
+        SharePreferenceUtils.putString(Constant.PASSWORD,"");
+        startActivity(intent);
+        finish(); // Đảm bảo người dùng không thể quay lại màn hình này bằng nút back
     }
 }
