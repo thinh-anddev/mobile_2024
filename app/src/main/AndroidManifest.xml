@@ -45,6 +45,9 @@
             android:name=".view.order.OrderActivity"
             android:exported="false" />
         <activity
+            android:name=".view.order.OrderSuccessActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.search.SearchActivity"
             android:exported="false" />
         <activity
@@ -63,6 +66,9 @@
 
         <activity
             android:name=".view.profile.ChangeInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.profile.ChangePasswordActivity"
             android:exported="false" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
