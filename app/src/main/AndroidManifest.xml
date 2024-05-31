@@ -70,6 +70,9 @@
         <activity
             android:name=".view.profile.ChangePasswordActivity"
             android:exported="false" />
+        <activity
+            android:name=".view.admin.AdminActivity"
+            android:exported="false" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/geo_key" />
