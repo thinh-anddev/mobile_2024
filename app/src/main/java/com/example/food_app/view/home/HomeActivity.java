@@ -22,6 +22,7 @@ import com.example.food_app.model.Category;
 import com.example.food_app.model.Food;
 import com.example.food_app.model.News;
 import com.example.food_app.repository.Repository;
+import com.example.food_app.service.OrderService;
 import com.example.food_app.utils.Constant;
 import com.example.food_app.utils.SharePreferenceUtils;
 import com.example.food_app.view.cart.CartActivity;
@@ -60,6 +61,11 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
 
     @Override
     protected void initView() {
+
+        //start service
+        Intent serviceIntent = new Intent(this, OrderService.class);
+        startService(serviceIntent);
+
         requestPermission();
         initLoadingData();
         getListFood(new CallBack.OnDataLoad() {

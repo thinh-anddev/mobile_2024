@@ -39,8 +39,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class OrderActivity extends BaseActivity<ActivityOrderBinding> {
-    private static final String CHANNEL_ID = "DTDFood";
-    private static final int NOTIFICATION_ID = 1;
     private User currentUser = null;
     private Order order;
     private String actionOrder;
@@ -54,7 +52,6 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> {
 
     @Override
     protected void initView() {
-        createNotificationChannel();
         binding.imvTickCard.setActivated(true);
         initLoadingData();
         getUserFromFirebase(() -> {
@@ -84,7 +81,6 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> {
         });
 
         binding.btnStartOrder.setOnClickListener(v -> {
-            sendNotification();
             order.setStatus(Constant.PENDING);
             updateOrder(order);
             startActivity(new Intent(OrderActivity.this, OrderSuccessActivity.class));
@@ -198,44 +194,5 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setCancelable(false);
         progressDialog.show();
-    }
-
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "My Channel";
-            String description = "con cac tan ngu";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
-
-    private void sendNotification() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(com.google.android.gms.base.R.drawable.common_google_signin_btn_icon_dark)
-                .setContentTitle("Đặt thức ăn thành công")
-                .setContentText("Chờ tí nhé! Shipper đang đến.")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 }

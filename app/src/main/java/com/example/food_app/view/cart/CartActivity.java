@@ -170,6 +170,7 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
             rf.child("Order").child(user.getUid()).child(orderData.getInvoiceNumber()).setValue(orderData).addOnCompleteListener(task -> {
                 Toast.makeText(this, "Tạo đơn hàng", Toast.LENGTH_SHORT).show();
             });
+            cartList.clear();
             Intent intent = new Intent(this, OrderActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString("actionOrder", orderData.getStatus());
