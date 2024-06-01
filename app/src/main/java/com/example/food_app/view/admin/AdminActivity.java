@@ -31,11 +31,6 @@ public class AdminActivity extends BaseActivity<ActivityAdminBinding> {
     @Override
     protected void initView() {
         initLoadingData();
-        getListOrderFromFirebase(() -> {
-            binding.tvCountPendingOrder.setText(String.valueOf(filterOrderPending()));
-            binding.tvCountCompleteOrder.setText(String.valueOf(filterCompleteOrder()));
-            dialogLoading.cancel();
-        });
     }
 
     @Override
@@ -97,5 +92,15 @@ public class AdminActivity extends BaseActivity<ActivityAdminBinding> {
         dialogLoading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialogLoading.setCancelable(false);
         dialogLoading.show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getListOrderFromFirebase(() -> {
+            binding.tvCountPendingOrder.setText(String.valueOf(filterOrderPending()));
+            binding.tvCountCompleteOrder.setText(String.valueOf(filterCompleteOrder()));
+            dialogLoading.cancel();
+        });
     }
 }
