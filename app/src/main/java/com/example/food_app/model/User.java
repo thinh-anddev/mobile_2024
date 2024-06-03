@@ -1,6 +1,8 @@
 package com.example.food_app.model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String id;
     private String email;
     private String name;
@@ -9,15 +11,18 @@ public class User {
     private String contact;
     private String admin;
     private String paymentMethod;
+    private boolean isBlock;
     public User(){}
 
-    public User(String email,String name,String address, String photoUrl, String contact, String admin) {
+    public User(String id, String email,String name,String address, String photoUrl, String contact, String admin, boolean isBlock) {
+        this.id = id;
         this.email = email;
         this.name = name;
         this.address = address;
         this.photoUrl = photoUrl;
         this.contact = contact;
         this.admin = admin;
+        this.isBlock = isBlock;
     }
 
     public String getAddress() {
@@ -76,11 +81,11 @@ public class User {
         this.admin = date;
     }
 
-    public String getPaymentMethod() {
-        return paymentMethod;
+    public boolean isBlock() {
+        return isBlock;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
+    public void setBlock(boolean block) {
+        isBlock = block;
     }
 }

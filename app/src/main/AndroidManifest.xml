@@ -76,6 +76,12 @@
         <activity
             android:name=".view.admin.OrderDispatchActivity"
             android:exported="false" />
+        <activity
+            android:name=".view.admin.UserManagerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.admin.EditUserActivity"
+            android:exported="false" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/geo_key" />

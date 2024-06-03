@@ -102,7 +102,7 @@ public class OrderDispatchActivity extends BaseActivity<ActivityOrderDispatchBin
                                 if (task.isSuccessful()) {
                                     Toast.makeText(OrderDispatchActivity.this, "Đơn hàng đã được lên", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Log.e("updateOrder", "Failed to update order.", task.getException());
+                                    Log.e("updateOrder", "Failed", task.getException());
                                 }
                             }
                         });

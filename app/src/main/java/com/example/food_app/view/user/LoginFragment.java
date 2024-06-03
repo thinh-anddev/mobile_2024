@@ -66,8 +66,11 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
                                     ((UserActivity) getActivity()).getUserFromFirebase(new CallBack.OnDataLoad() {
                                         @Override
                                         public void onDataLoad() {
-                                            currentUser = ((UserActivity) getActivity()).getCurrentUser();
-                                            showAlertDialog();
+                                            currentUser = ((UserActivity) getActivity()).currentUser;
+                                            if (currentUser.isBlock()) {
+                                                ((UserActivity) getActivity()).signOut();
+                                                Toast.makeText(requireContext(), "Tài khoản bạn không tồn tại", Toast.LENGTH_SHORT).show();
+                                            } else showAlertDialog();
                                         }
                                     });
                                 } else {

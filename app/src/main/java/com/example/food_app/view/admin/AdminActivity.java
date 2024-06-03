@@ -46,6 +46,10 @@ public class AdminActivity extends BaseActivity<ActivityAdminBinding> {
             startActivity(new Intent(this, OrderDispatchActivity.class));
         });
 
+        binding.btnUserManager.setOnClickListener(v -> {
+            startActivity(new Intent(this, UserManagerActivity.class));
+        });
+
         binding.btnLogout.setOnClickListener(v -> {
             signOut();
         });
@@ -77,7 +81,6 @@ public class AdminActivity extends BaseActivity<ActivityAdminBinding> {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    // Assuming each child in "Order" node is a list of orders per user
                     for (DataSnapshot userOrderSnapshot : dataSnapshot.getChildren()) {
                         Order order = userOrderSnapshot.getValue(Order.class);
                         orderList.add(order);
