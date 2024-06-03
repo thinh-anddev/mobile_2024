@@ -1,6 +1,8 @@
 package com.example.food_app.model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String id;
     private String email;
     private String name;
@@ -11,7 +13,8 @@ public class User {
     private String paymentMethod;
     public User(){}
 
-    public User(String email,String name,String address, String photoUrl, String contact, String admin) {
+    public User(String id, String email,String name,String address, String photoUrl, String contact, String admin) {
+        this.id = id;
         this.email = email;
         this.name = name;
         this.address = address;
