@@ -73,11 +73,15 @@
         <activity
             android:name=".view.admin.AdminActivity"
             android:exported="false" />
+        <activity
+            android:name=".view.admin.OrderDispatchActivity"
+            android:exported="false" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/geo_key" />
-
-
+        <service
+            android:name=".service.OrderService"
+            android:exported="false" />
 </application>
 
 
