@@ -39,9 +39,15 @@ public class UserManagerAdapter extends RecyclerView.Adapter<UserManagerAdapter.
 
         holder.tvNameUser.setText(user.getName());
         holder.tvEmail.setText(user.getEmail());
+        holder.tvBlock.setText(user.isBlock() ? "Bỏ chặn" : "Chặn");
 
         holder.tvEdit.setOnClickListener(v -> {
             listener.onEdit(user.getId());
+        });
+
+        holder.tvBlock.setOnClickListener(v -> {
+            listener.onBlock(user.getId());
+            notifyItemChanged(position);
         });
     }
 
@@ -51,6 +57,7 @@ public class UserManagerAdapter extends RecyclerView.Adapter<UserManagerAdapter.
     }
     public interface OnClickOnButton {
         void onEdit(String id);
+        void onBlock(String id);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

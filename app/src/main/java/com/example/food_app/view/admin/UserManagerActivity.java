@@ -1,8 +1,10 @@
 package com.example.food_app.view.admin;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,6 +14,8 @@ import com.example.food_app.databinding.ActivityUserManagerBinding;
 import com.example.food_app.helper.CallBack;
 import com.example.food_app.model.User;
 import com.example.food_app.view.admin.adapter.UserManagerAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -22,6 +26,7 @@ import java.util.List;
 public class UserManagerActivity extends BaseActivity<ActivityUserManagerBinding> {
     private List<User> userList = new ArrayList<>();
     private UserManagerAdapter adapter;
+    ProgressDialog dialog;
     @Override
     protected ActivityUserManagerBinding setViewBinding() {
         return ActivityUserManagerBinding.inflate(LayoutInflater.from(this));
@@ -29,7 +34,14 @@ public class UserManagerActivity extends BaseActivity<ActivityUserManagerBinding
 
     @Override
     protected void initView() {
-        getAllUserFromFB(() -> initAdapter());
+        initLoadingData();
+        getAllUserFromFB(new CallBack.OnDataLoad() {
+            @Override
+            public void onDataLoad() {
+                dialog.cancel();
+                initAdapter();
+            }
+        });
     }
 
     @Override
@@ -64,6 +76,11 @@ public class UserManagerActivity extends BaseActivity<ActivityUserManagerBinding
             public void onEdit(String id) {
                 findUserById(id);
             }
+
+            @Override
+            public void onBlock(String id) {
+                blockUser(id);
+            }
         });
         binding.rcvUser.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         binding.rcvUser.setAdapter(adapter);
@@ -89,5 +106,43 @@ public class UserManagerActivity extends BaseActivity<ActivityUserManagerBinding
 
             }
         });
+    }
+
+    private void blockUser(String id) {
+        rf.child("Users").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot != null) {
+                    User user = snapshot.getValue(User.class);
+                    user.setBlock(user.isBlock() ? false : true);
+                    rf.child("Users").child(id).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                if (user.isBlock()) {
+                                    Toast.makeText(UserManagerActivity.this, "Đã chặn User này", Toast.LENGTH_SHORT).show();
+                                } else Toast.makeText(UserManagerActivity.this, "Đã bỏ chặn User này", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    private void initLoadingData() {
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Vui lòng đợi");
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setCancelable(false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

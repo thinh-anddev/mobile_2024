@@ -11,9 +11,10 @@ public class User implements Serializable {
     private String contact;
     private String admin;
     private String paymentMethod;
+    private boolean isBlock;
     public User(){}
 
-    public User(String id, String email,String name,String address, String photoUrl, String contact, String admin) {
+    public User(String id, String email,String name,String address, String photoUrl, String contact, String admin, boolean isBlock) {
         this.id = id;
         this.email = email;
         this.name = name;
@@ -21,6 +22,7 @@ public class User implements Serializable {
         this.photoUrl = photoUrl;
         this.contact = contact;
         this.admin = admin;
+        this.isBlock = isBlock;
     }
 
     public String getAddress() {
@@ -79,11 +81,11 @@ public class User implements Serializable {
         this.admin = date;
     }
 
-    public String getPaymentMethod() {
-        return paymentMethod;
+    public boolean isBlock() {
+        return isBlock;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
+    public void setBlock(boolean block) {
+        isBlock = block;
     }
 }
