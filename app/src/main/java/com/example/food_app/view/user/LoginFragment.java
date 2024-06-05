@@ -30,6 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
 import java.util.concurrent.Executor;
 
 public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
@@ -66,7 +67,7 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
                                     ((UserActivity) getActivity()).getUserFromFirebase(new CallBack.OnDataLoad() {
                                         @Override
                                         public void onDataLoad() {
-                                            currentUser = ((UserActivity) getActivity()).currentUser;
+                                            currentUser = ((UserActivity) requireActivity()).currentUser;
                                             if (currentUser.isBlock()) {
                                                 ((UserActivity) getActivity()).signOut();
                                                 Toast.makeText(requireContext(), "Tài khoản bạn không tồn tại", Toast.LENGTH_SHORT).show();
