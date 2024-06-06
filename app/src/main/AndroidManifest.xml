@@ -82,6 +82,9 @@
         <activity
             android:name=".view.admin.EditUserActivity"
             android:exported="false" />
+        <activity
+            android:name=".view.user.ResetPasswordActivity"
+            android:exported="false" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/geo_key" />

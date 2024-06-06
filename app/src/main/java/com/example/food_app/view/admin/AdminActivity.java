@@ -106,13 +106,12 @@ public class AdminActivity extends BaseActivity<ActivityAdminBinding> {
 
     private void signOut() {
         mAuth.signOut();
-        // Chuyển hướng người dùng đến màn hình đăng nhập hoặc màn hình chính
         Intent intent = new Intent(AdminActivity.this, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         SharePreferenceUtils.putString(Constant.USERNAME,"");
         SharePreferenceUtils.putString(Constant.PASSWORD,"");
         startActivity(intent);
-        finish(); // Đảm bảo người dùng không thể quay lại màn hình này bằng nút back
+        finish();
     }
 
     @Override

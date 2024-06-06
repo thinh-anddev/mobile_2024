@@ -20,7 +20,7 @@ public class EditUserActivity extends BaseActivity<ActivityEditUserBinding> {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             user = (User) bundle.getSerializable("User");
-            Log.d("userzzz", user.getEmail());
+            setUpProfile(user);
         }
     }
 
@@ -29,5 +29,11 @@ public class EditUserActivity extends BaseActivity<ActivityEditUserBinding> {
         binding.btnBack.setOnClickListener(v -> {
             onBackPressed();
         });
+    }
+
+    private void setUpProfile(User user) {
+        binding.edtName.setHint(user.getName());
+        binding.edtContact.setHint(user.getContact());
+        binding.tvAddress.setText(user.getAddress());
     }
 }
