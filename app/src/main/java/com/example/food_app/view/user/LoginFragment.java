@@ -84,6 +84,10 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
                 startActivity(new Intent(requireActivity(), InternetActivity.class));
             }
         });
+
+        binding.tvForgotPassword.setOnClickListener(v -> {
+            startActivity(new Intent(requireActivity(), ResetPasswordActivity.class));
+        });
     }
 
     private void showAlertDialog() {
