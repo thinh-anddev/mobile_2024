@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.food_app.R;
 import com.example.food_app.model.Food;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class SeeMoreAdapter extends RecyclerView.Adapter<SeeMoreAdapter.SeeMoreV
         }
 
         holder.tvTitle.setText(food.getTitle());
-        holder.tvPrice.setText(String.valueOf(food.getPrice()));
+        holder.tvPrice.setText(formatCost((int) food.getPrice()));
         holder.imvFood.setImageResource(food.getPhoto());
         holder.itemView.setOnClickListener(v -> {
             listener.onClick(food.getId());
@@ -52,6 +53,12 @@ public class SeeMoreAdapter extends RecyclerView.Adapter<SeeMoreAdapter.SeeMoreV
     @Override
     public int getItemCount() {
         return listFood.size();
+    }
+
+    private String formatCost(int cost) {
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        String formattedCost = decimalFormat.format(cost)+"đ";
+        return formattedCost;
     }
 
     public interface IFoodListener {

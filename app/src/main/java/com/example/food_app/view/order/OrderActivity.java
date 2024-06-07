@@ -158,19 +158,23 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> {
 
     private void updateOrder(Order order) {
         Log.d("getInvoiceNumber", order.getInvoiceNumber());
-        rf.child("Order").child(user.getUid()).child(order.getInvoiceNumber()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    rf.child("Order").child(user.getUid()).child(order.getInvoiceNumber()).setValue(order);
+        if (order.getAddress().equals("")) {
+            Toast.makeText(this, "Vui lòng nhập địa chỉ của bạn", Toast.LENGTH_SHORT).show();
+        } else {
+            rf.child("Order").child(user.getUid()).child(order.getInvoiceNumber()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        rf.child("Order").child(user.getUid()).child(order.getInvoiceNumber()).setValue(order);
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     private void setUpProfile() {

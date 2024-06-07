@@ -31,7 +31,6 @@ import java.util.Map;
 
 public class OrderService extends Service {
     private static final String CHANNEL_ID = "DTDFood";
-    private static final int NOTIFICATION_ID = 1;
     protected FirebaseAuth mAuth;
     protected FirebaseUser user;
     protected FirebaseDatabase db;
