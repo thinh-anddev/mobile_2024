@@ -61,7 +61,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         curCount = cart.getNumber();
         viewBinder.bind(holder.swipeLayout,String.valueOf(food.getId()));
         holder.tvTitle.setText(food.getTitle());
-        holder.tvPrice.setText(formatCost(curPrice * curCount) );
+        holder.tvPrice.setText(formatCost(curPrice * curCount));
         holder.imvFood.setImageResource(food.getPhoto());
         holder.tvCount.setText(String.valueOf(curCount));
 

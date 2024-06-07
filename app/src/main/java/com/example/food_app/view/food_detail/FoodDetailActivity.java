@@ -22,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -57,7 +58,7 @@ public class FoodDetailActivity extends BaseActivity<ActivityFoodDetailBinding> 
                         food = f;
                         binding.imvFood.setImageResource(f.getPhoto());
                         binding.tvNameFood.setText(f.getTitle());
-                        binding.tvPrice.setText(String.valueOf(f.getPrice()));
+                        binding.tvPrice.setText(formatCost((int) f.getPrice()));
                         binding.tvContent.setText(f.getDescription());
                     }
                 }
@@ -172,4 +173,9 @@ public class FoodDetailActivity extends BaseActivity<ActivityFoodDetailBinding> 
         dialogLoading.show();
     }
 
+    private String formatCost(int cost) {
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        String formattedCost = decimalFormat.format(cost)+"đ";
+        return formattedCost;
+    }
 }
