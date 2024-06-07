@@ -25,6 +25,7 @@ import com.example.food_app.repository.Repository;
 import com.example.food_app.service.OrderService;
 import com.example.food_app.utils.Constant;
 import com.example.food_app.utils.SharePreferenceUtils;
+import com.example.food_app.view.admin.AdminActivity;
 import com.example.food_app.view.cart.CartActivity;
 import com.example.food_app.view.favourite.FavouriteActivity;
 import com.example.food_app.view.food_detail.FoodDetailActivity;
@@ -92,6 +93,9 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
 
     @Override
     protected void viewListener() {
+        binding.btnMenu.setOnClickListener(v -> {
+            startActivity(new Intent(HomeActivity.this,AdminActivity.class));
+        });
         binding.btnHistory.setOnClickListener(v -> {
             startActivity(new Intent(HomeActivity.this, HistoryActivity.class));
         });
