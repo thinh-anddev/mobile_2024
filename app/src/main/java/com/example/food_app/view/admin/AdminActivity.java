@@ -12,6 +12,7 @@ import com.example.food_app.helper.CallBack;
 import com.example.food_app.model.Order;
 import com.example.food_app.utils.Constant;
 import com.example.food_app.utils.SharePreferenceUtils;
+import com.example.food_app.view.home.HomeActivity;
 import com.example.food_app.view.home.seemore.SeeMoreActivity;
 import com.example.food_app.view.profile.ProfileActivity;
 import com.example.food_app.view.splash.SplashActivity;
@@ -38,6 +39,12 @@ public class AdminActivity extends BaseActivity<ActivityAdminBinding> {
 
     @Override
     protected void viewListener() {
+        binding.btnAddFood.setOnClickListener(v -> {
+            startActivity(new Intent(this, AddFoodActivity.class));
+        });
+        binding.btnBack.setOnClickListener(v -> {
+            startActivity(new Intent(this, HomeActivity.class));
+        });
         binding.btnAllFood.setOnClickListener(v -> {
             startActivity(new Intent(this, SeeMoreActivity.class));
         });
