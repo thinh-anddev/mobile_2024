@@ -42,10 +42,11 @@ dependencies {
     implementation ("com.google.android.material:material:1.8.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.cardview:cardview:1.0.0")
-    implementation ("com.github.bumptech.glide:glide:4.11.0")
+    //glide
+    implementation ("com.github.bumptech.glide:glide:4.14.2")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.14.2")
     implementation("com.google.firebase:firebase-database:20.3.1")
     implementation ("com.google.firebase:firebase-auth:21.0.1")
-    annotationProcessor ("com.github.bumptech.glide:compiler:4.11.0")
     implementation ("androidx.room:room-ktx:2.6.1")
     implementation ("androidx.room:room-paging:2.6.1")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
