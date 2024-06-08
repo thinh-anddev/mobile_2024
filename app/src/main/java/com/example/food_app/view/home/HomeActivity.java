@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -66,7 +67,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
         //start service
         Intent serviceIntent = new Intent(this, OrderService.class);
         startService(serviceIntent);
-
+        checkPermissionCamera();
         requestPermission();
         initLoadingData();
         getListFood(new CallBack.OnDataLoad() {
@@ -253,4 +254,19 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
             }
         }
     }
+    private void checkPermissionCamera() {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S_V2) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO}, 1222);
+            } else {
+            }
+        } else {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 1222);
+            } else {
+            }
+        }
+
+    }
+
 }

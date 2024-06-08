@@ -72,40 +72,4 @@ public class UserActivity extends BaseActivity<ActivityUserBinding> {
             }
         });
     }
-
-    private void initLoadingData() {
-        dialog = new ProgressDialog(this);
-        dialog.setMessage("Vui lòng đợi");
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setCancelable(false);
-    }
-
-    public void getUserFromFirebase(CallBack.OnDataLoad listener) {
-        rf.child("Users").child(user != null ? user.getUid() : "").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    currentUser = snapshot.getValue(User.class);
-                }
-                listener.onDataLoad();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    public void signOut() {
-        mAuth.signOut();
-        // Chuyển hướng người dùng đến màn hình đăng nhập hoặc màn hình chính
-        Intent intent = new Intent(UserActivity.this, SplashActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        SharePreferenceUtils.putString(Constant.USERNAME,"");
-        SharePreferenceUtils.putString(Constant.PASSWORD,"");
-        startActivity(intent);
-        finish(); // Đảm bảo người dùng không thể quay lại màn hình này bằng nút back
-    }
-
 }

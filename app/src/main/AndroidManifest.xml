@@ -69,7 +69,10 @@
         <activity
             android:name=".view.favourite.FavouriteActivity"
             android:exported="false" />
-        <activity android:name="com.example.food_app.view.home.signout.SignoutActivity" />
+        <activity
+            android:name="com.example.food_app.view.home.signout.SignoutActivity"
+            android:exported="false"
+            />
 
         <activity
             android:name=".view.profile.ChangeInfoActivity"

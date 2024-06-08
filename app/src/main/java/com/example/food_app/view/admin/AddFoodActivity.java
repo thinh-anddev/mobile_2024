@@ -13,9 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-
 import android.Manifest;
-
 import com.bumptech.glide.Glide;
 import com.example.food_app.base.BaseActivity;
 import com.example.food_app.databinding.ActivityAddFoodBinding;
@@ -24,9 +22,7 @@ import com.example.food_app.utils.CommonUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-
 import android.widget.Toast;
-
 import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
@@ -137,7 +133,6 @@ public class AddFoodActivity extends BaseActivity<ActivityAddFoodBinding> {
                 selectImageFromGallery();
             }
         }
-
     }
 
     private void selectImageFromGallery() {
@@ -146,6 +141,7 @@ public class AddFoodActivity extends BaseActivity<ActivityAddFoodBinding> {
         intent.setAction(Intent.ACTION_PICK);
         startActivityForResult(intent, 100);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
