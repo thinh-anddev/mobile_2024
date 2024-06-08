@@ -22,6 +22,7 @@ import com.example.food_app.utils.SharePreferenceUtils;
 import com.example.food_app.view.admin.AdminActivity;
 import com.example.food_app.view.home.HomeActivity;
 import com.example.food_app.view.internet.InternetActivity;
+import com.example.food_app.view.splash.SplashActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,7 +35,6 @@ import java.util.Objects;
 import java.util.concurrent.Executor;
 
 public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
-    FirebaseAuth mAuth;
     private String email;
     private String password;
     private ProgressDialog dialog;
@@ -46,7 +46,6 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
 
     @Override
     protected void initView() {
-        mAuth = FirebaseAuth.getInstance();
         initLoadingData();
     }
 
@@ -64,14 +63,16 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
                     mAuth.signInWithEmailAndPassword(email, password)
                             .addOnCompleteListener( task -> {
                                 if (task.isSuccessful()) {
-                                    ((UserActivity) getActivity()).getUserFromFirebase(new CallBack.OnDataLoad() {
+                                    user = mAuth.getCurrentUser();
+                                    getUserFromFirebase(new CallBack.OnDataLoad() {
                                         @Override
                                         public void onDataLoad() {
-                                            currentUser = ((UserActivity) requireActivity()).currentUser;
                                             if (currentUser.isBlock()) {
-                                                ((UserActivity) getActivity()).signOut();
+                                                signOut();
                                                 Toast.makeText(requireContext(), "Tài khoản bạn không tồn tại", Toast.LENGTH_SHORT).show();
-                                            } else showAlertDialog();
+                                            } else {
+                                                showAlertDialog();
+                                            }
                                         }
                                     });
                                 } else {
@@ -91,34 +92,43 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
     }
 
     private void showAlertDialog() {
+        dialog.cancel();
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Bạn có muốn lưu mật khẩu?")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog1, int which) {
-                        SharePreferenceUtils.putString(Constant.USERNAME,email);
-                        SharePreferenceUtils.putString(Constant.PASSWORD,password);
-                        if (currentUser.getAdmin().equals("0")) {
-                            startActivity(new Intent(requireActivity(), HomeActivity.class));
-                        } else startActivity(new Intent(requireActivity(), AdminActivity.class));
-                        Toast.makeText(requireContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                        dialog.cancel();
-                        dialog1.dismiss();
-                    }
+                .setPositiveButton("OK", (dialog1, which) -> {
+                    SharePreferenceUtils.putString(Constant.USERNAME,email);
+                    SharePreferenceUtils.putString(Constant.PASSWORD,password);
+                    if (currentUser.getAdmin().equals("0")) {
+                        startActivity(new Intent(requireActivity(), HomeActivity.class));
+                    } else startActivity(new Intent(requireActivity(), AdminActivity.class));
+                    Toast.makeText(requireContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                    dialog1.dismiss();
                 })
-                .setNegativeButton("Không", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog1, int which) {
-                        if (currentUser.getAdmin().equals("0")) {
-                            startActivity(new Intent(requireActivity(), HomeActivity.class));
-                        } else startActivity(new Intent(requireActivity(), AdminActivity.class));
-                        Toast.makeText(requireContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                        dialog.cancel();
-                        dialog1.dismiss();
-                    }
+                .setNegativeButton("Không", (dialog1, which) -> {
+                    if (currentUser.getAdmin().equals("0")) {
+                        startActivity(new Intent(requireActivity(), HomeActivity.class));
+                    } else startActivity(new Intent(requireActivity(), AdminActivity.class));
+                    Toast.makeText(requireContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                    dialog1.dismiss();
                 });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+    public void getUserFromFirebase(CallBack.OnDataLoad listener) {
+        rf.child("Users").child(user != null ? user.getUid() : "").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    currentUser = snapshot.getValue(User.class);
+                }
+                listener.onDataLoad();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void initLoadingData() {
@@ -128,4 +138,14 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
         dialog.setCancelable(false);
     }
 
+    public void signOut() {
+        mAuth.signOut();
+        // Chuyển hướng người dùng đến màn hình đăng nhập hoặc màn hình chính
+        Intent intent = new Intent(requireActivity(), SplashActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        SharePreferenceUtils.putString(Constant.USERNAME,"");
+        SharePreferenceUtils.putString(Constant.PASSWORD,"");
+        startActivity(intent);
+        requireActivity().finish(); // Đảm bảo người dùng không thể quay lại màn hình này bằng nút back
+    }
 }

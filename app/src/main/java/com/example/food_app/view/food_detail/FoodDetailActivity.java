@@ -2,29 +2,24 @@ package com.example.food_app.view.food_detail;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.telecom.Call;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.food_app.helper.CallBack;
 import androidx.annotation.NonNull;
 
-import com.example.food_app.R;
 import com.example.food_app.base.BaseActivity;
 import com.example.food_app.databinding.ActivityFoodDetailBinding;
 import com.example.food_app.model.Cart;
 import com.example.food_app.model.Food;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class FoodDetailActivity extends BaseActivity<ActivityFoodDetailBinding> {
@@ -56,7 +51,11 @@ public class FoodDetailActivity extends BaseActivity<ActivityFoodDetailBinding> 
                 for (Food f: foodList) {
                     if (f.getId() == idFood) {
                         food = f;
-                        binding.imvFood.setImageResource(f.getPhoto());
+                        if (food.getPhotoString().equals("local")) {
+                            binding.imvFood.setImageResource(f.getPhoto());
+                        } else {
+                            Glide.with(this).load(food.getPhotoString()).into(binding.imvFood);
+                        }
                         binding.tvNameFood.setText(f.getTitle());
                         binding.tvPrice.setText(formatCost((int) f.getPrice()));
                         binding.tvContent.setText(f.getDescription());

@@ -12,9 +12,16 @@ import androidx.fragment.app.Fragment;
 import androidx.viewbinding.ViewBinding;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public abstract class BaseFragment<T extends ViewBinding> extends Fragment {
     protected T binding;
+    protected FirebaseAuth mAuth;
+    protected FirebaseUser user;
+    protected FirebaseDatabase db;
+    protected DatabaseReference rf;
 
     protected abstract T setViewBinding(LayoutInflater inflater, @Nullable ViewGroup viewGroup);
 
@@ -28,6 +35,10 @@ public abstract class BaseFragment<T extends ViewBinding> extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = setViewBinding(inflater, container);
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        db = FirebaseDatabase.getInstance();
+        rf = db.getReference();
         return binding.getRoot();
     }
 

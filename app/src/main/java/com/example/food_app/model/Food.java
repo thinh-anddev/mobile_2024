@@ -11,11 +11,10 @@ public class Food implements Serializable {
     private String description;
     private int photo;
     private int quantity;
-    public Food() {
-        // Default constructor required for calls to DataSnapshot.getValue(Food.class)
-    }
+    private String photoString;
+    public Food() {}
 
-    public Food(int id, String title, double price, String category, String status, String description, int photo, int quantity) {
+    public Food(int id, String title, double price, String category, String status, String description, int photo, int quantity, String photoString) {
         this.id = id;
         this.title = title;
         this.price = price;
@@ -24,17 +23,7 @@ public class Food implements Serializable {
         this.description = description;
         this.photo = photo;
         this.quantity = quantity;
-    }
-    public Food( int id,String title,  String category,double price,  int quantity, int photo, String description) {
-        this.id = id;
-        this.title = title;
-        this.category = category;
-        this.price = price;
-        this.quantity = quantity;
-        this.photo = photo;
-        this.description = description;
-
-
+        this.photoString = photoString;
     }
     public int getId() {
         return id;
@@ -98,6 +87,15 @@ public class Food implements Serializable {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+
+    public String getPhotoString() {
+        return photoString;
+    }
+
+    public void setPhotoString(String photoString) {
+        this.photoString = photoString;
     }
 
     @Override

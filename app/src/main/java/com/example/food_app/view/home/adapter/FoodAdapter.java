@@ -1,6 +1,9 @@
 package com.example.food_app.view.home.adapter;
 
+import android.content.ClipData;
 import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.food_app.R;
+import com.example.food_app.databinding.ItemFoodBinding;
 import com.example.food_app.model.Food;
 
 import java.text.DecimalFormat;
@@ -30,26 +35,13 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
     @NonNull
     @Override
     public FoodAdapter.FoodViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_food, parent, false);
-        return new FoodAdapter.FoodViewHolder(view);
+        ItemFoodBinding binding = ItemFoodBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new FoodViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull FoodAdapter.FoodViewHolder holder, int position) {
-        Food food = foodList.get(position);
-        if (food == null) {
-            return;
-        }
-
-        holder.imvFood.setImageResource(food.getPhoto());
-
-        holder.tvFood.setText(food.getTitle());
-
-        holder.tvPrice.setText(formatCost((int) food.getPrice()));
-
-        holder.itemView.setOnClickListener(v -> {
-            listener.onClick(food.getId());
-        });
+        holder.bindData(foodList.get(position));
     }
 
     @Override
@@ -68,15 +60,31 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
     }
 
     public class FoodViewHolder extends RecyclerView.ViewHolder {
-        TextView tvFood, tvPrice;
-        ImageView imvFood;
+        private ItemFoodBinding binding;
+        public FoodViewHolder(ItemFoodBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
 
+        public void bindData(Food food) {
+            if (food == null) {
+                return;
+            }
 
-        public FoodViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tvFood = itemView.findViewById(R.id.tvFood);
-            tvPrice = itemView.findViewById(R.id.tvPrice);
-            imvFood= itemView.findViewById(R.id.imvFood);
+            if (food.getPhotoString().equals("local")) {
+                binding.imvFood.setImageResource(food.getPhoto());
+            } else {
+                Uri uri = Uri.parse(food.getPhotoString());
+                Glide.with(binding.getRoot().getContext()).load(uri).into(binding.imvFood);
+            }
+
+            binding.tvFood.setText(food.getTitle());
+
+            binding.tvPrice.setText(formatCost((int) food.getPrice()));
+
+            binding.getRoot().setOnClickListener(v -> {
+                listener.onClick(food.getId());
+            });
         }
     }
 }
