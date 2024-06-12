@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,7 @@ import com.example.food_app.base.BaseActivity;
 import com.example.food_app.databinding.ActivityHomeBinding;
 import com.example.food_app.helper.CallBack;
 import com.example.food_app.model.Category;
+import com.example.food_app.model.DrawerItemModel;
 import com.example.food_app.model.Food;
 import com.example.food_app.model.News;
 import com.example.food_app.repository.Repository;
@@ -32,6 +34,7 @@ import com.example.food_app.view.favourite.FavouriteActivity;
 import com.example.food_app.view.food_detail.FoodDetailActivity;
 import com.example.food_app.view.history.HistoryActivity;
 import com.example.food_app.view.home.adapter.CategoryAdapter;
+import com.example.food_app.view.home.adapter.DrawerItemCustomAdapter;
 import com.example.food_app.view.home.adapter.FoodAdapter;
 import com.example.food_app.view.home.adapter.NewAdapter;
 import com.example.food_app.view.home.seemore.SeeMoreActivity;
@@ -45,7 +48,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
+public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements CallBack.ItemClickListener{
     private CategoryAdapter categoryAdapter;
     private FoodAdapter foodAdapter;
     private NewAdapter newAdapter;
@@ -54,6 +57,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
     private List<News> newsList = new ArrayList<>();
     private String cate;
     private ProgressDialog loadingDataDialog;
+    private DrawerItemModel[] drawerItemGeneral;
     private int NOTIFICATIONS_PERMISSION_REQUEST_CODE = 112;
 
     @Override
@@ -63,6 +67,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
 
     @Override
     protected void initView() {
+        initDrawer();
 
         //start service
         Intent serviceIntent = new Intent(this, OrderService.class);
@@ -95,14 +100,11 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
     @Override
     protected void viewListener() {
         binding.btnMenu.setOnClickListener(v -> {
-            startActivity(new Intent(HomeActivity.this,AdminActivity.class));
-        });
-        binding.btnHistory.setOnClickListener(v -> {
-            startActivity(new Intent(HomeActivity.this, HistoryActivity.class));
+            openDrawer();
         });
 
-        binding.btnProfile.setOnClickListener(v -> {
-            startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
+        binding.drawer.imgClose.setOnClickListener(v -> {
+            binding.drawerLayout.closeDrawer(binding.clDrawer);
         });
 
         binding.tvSeeMore.setOnClickListener(v -> {
@@ -113,22 +115,26 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
             startActivity(new Intent(HomeActivity.this, CartActivity.class));
         });
 
-        binding.btnFarvourite.setOnClickListener(v -> {
-            startActivity(new Intent(HomeActivity.this, FavouriteActivity.class));
-        });
-
         binding.clSearch.setOnClickListener(v -> startActivity(new Intent(HomeActivity.this, SearchActivity.class)));
-        binding.tvXoa.setOnClickListener(v -> {
-            user.delete();
-            startActivity(new Intent(HomeActivity.this, UserActivity.class));
-            //startActivity(new Intent(HomeActivity.this, ChooseAddress.class));
-        });
+    }
 
-//        String displayName = user.getDisplayName();
-//        String email = user.getEmail();
-//        String uid = user.getUid();
-//        Uri photoUrl = user.getPhotoUrl();
-//        binding.tvSeeMore.setText(displayName + email + uid + photoUrl);
+    private void initDrawer() {
+        DrawerItemModel[] drawerItemSetting = new DrawerItemModel[0];
+
+        DrawerItemCustomAdapter settingDrawerAdapter = new DrawerItemCustomAdapter(this, R.layout.layout_drawer_setting_item, drawerItemSetting, this::selectItemSetting);
+        binding.drawer.lvSetting.setAdapter(settingDrawerAdapter);
+
+        drawerItemGeneral = new DrawerItemModel[3];
+        drawerItemGeneral[0] = new DrawerItemModel(R.drawable.ic_profile, "Trang cá nhân");
+        drawerItemGeneral[1] = new DrawerItemModel(R.drawable.ic_history, "Lịch sử đơn hàng");
+        drawerItemGeneral[2] = new DrawerItemModel(R.drawable.ic_farvourite, "Danh sách yêu thích");
+
+        DrawerItemCustomAdapter generalDrawerAdapter = new DrawerItemCustomAdapter(this, R.layout.layout_drawer_general_item, drawerItemGeneral, this);
+        binding.drawer.lvGeneral.setAdapter(generalDrawerAdapter);
+    }
+
+    private void openDrawer() {
+        binding.drawerLayout.openDrawer(GravityCompat.START);
     }
 
     private void getListFood(CallBack.OnDataLoad listener) {
@@ -269,4 +275,38 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
 
     }
 
+    private void selectItemSetting(int position) {
+        Intent intent = new Intent();
+        if (position == 0) {
+            intent = new Intent(this, ProfileActivity.class);
+        }
+
+        startActivity(intent);
+        binding.drawerLayout.closeDrawer(binding.clDrawer);
+    }
+
+    private void selectItemGeneral(int position) {
+        Intent intent;
+        switch (position) {
+            case 0:
+                intent = new Intent(this, ProfileActivity.class);
+                startActivity(intent);
+                break;
+            case 1:
+                intent = new Intent(this, HistoryActivity.class);
+                startActivity(intent);
+                break;
+            case 2:
+                intent = new Intent(this, FavouriteActivity.class);
+                startActivity(intent);
+                break;
+        }
+
+        binding.drawerLayout.closeDrawer(binding.clDrawer);
+    }
+
+    @Override
+    public void onClick(int position) {
+        selectItemGeneral(position);
+    }
 }

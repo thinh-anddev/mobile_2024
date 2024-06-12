@@ -17,4 +17,7 @@ public class CallBack {
         void onAdd();
     }
 
+    public interface ItemClickListener {
+        void onClick(int position);
+    }
 }

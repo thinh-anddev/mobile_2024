@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/text_color"
+    android:paddingTop="24dp"
+    tools:ignore="RtlSymmetry">
+
+    <ImageView
+        android:id="@+id/imgApp"
+        android:layout_width="39dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="20dp"
+        android:contentDescription="@null"
+        android:src="@drawable/logo_app_option2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvAppName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="DTDFood"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@id/imgApp"
+        app:layout_constraintEnd_toStartOf="@id/imgClose"
+        app:layout_constraintStart_toEndOf="@id/imgApp"
+        app:layout_constraintTop_toTopOf="@id/imgApp" />
+
+    <ImageView
+        android:id="@+id/imgClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="14dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_close_drawer"
+        app:layout_constraintBottom_toBottomOf="@id/imgApp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/imgApp" />
+
+    <TextView
+        android:id="@+id/tvSetting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:textColor="#FF9B9EAD"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgApp" />
+
+    <ListView
+        android:id="@+id/lvSetting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        app:layout_constraintTop_toBottomOf="@id/tvSetting" />
+
+    <View
+        android:id="@+id/lineSetting"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#4D868794"
+        app:layout_constraintTop_toBottomOf="@id/lvSetting" />
+
+    <TextView
+        android:id="@+id/tvGeneral"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="28dp"
+        android:text="Menu"
+        android:textColor="#FF9B9EAD"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lineSetting" />
+
+    <ListView
+        android:id="@+id/lvGeneral"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:divider="@null"
+        app:layout_constraintTop_toBottomOf="@id/tvGeneral" />
+</androidx.constraintlayout.widget.ConstraintLayout>
