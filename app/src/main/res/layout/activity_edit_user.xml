@@ -158,42 +158,15 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bevietnampro_semibold"
                 android:textSize="17sp"
-                tools:text=""
+                android:text="Address:"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+
                 />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="15dp"
-            android:paddingVertical="20dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/clAddress"
-            android:background="@drawable/custom_bg_item_change_profile"
-            >
-
-            <TextView
-                android:id="@+id/tvTitlePassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/bevietnampro_semibold"
-                android:textSize="17sp"
-                android:text="Mật khẩu:"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/edtPassword"
-                app:layout_constraintBottom_toBottomOf="@+id/edtPassword"
-                />
-
             <EditText
-                android:id="@+id/edtPassword"
+                android:id="@+id/edtAddress"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
@@ -205,11 +178,12 @@
                 android:textSize="12sp"
                 android:layout_marginStart="7dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/tvTitlePassword"
+                app:layout_constraintStart_toEndOf="@+id/tvAddress"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
