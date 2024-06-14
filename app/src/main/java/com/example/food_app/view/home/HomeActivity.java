@@ -85,15 +85,15 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements C
                 initRcvNew();
             }
         });
-//        if (SharePreferenceUtils.getBoolean(Constant.FIRST_INSTALL, false)) {
-//            if(SharePreferenceUtils.getString(Constant.CHEATING,"false").equals("false")) {
-//                if (foodList.size() == 0) {
-//                    foodList.addAll(Repository.listFood());
-//                    rf.child("Foods").setValue(foodList);
-//                }
-//            }
-//            SharePreferenceUtils.putBoolean(Constant.FIRST_INSTALL, false);
-//        }
+        if (SharePreferenceUtils.getBoolean(Constant.FIRST_INSTALL, false)) {
+            if(SharePreferenceUtils.getString(Constant.CHEATING,"false").equals("false")) {
+                if (foodList.size() == 0) {
+                    foodList.addAll(Repository.listFood());
+                    rf.child("Foods").setValue(foodList);
+                }
+            }
+            SharePreferenceUtils.putBoolean(Constant.FIRST_INSTALL, false);
+        }
         Log.d("cqq", foodList.size() + "");
     }
 

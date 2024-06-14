@@ -96,7 +96,7 @@ public class AddFoodActivity extends BaseActivity<ActivityAddFoodBinding> {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int currentItemCount = (int) dataSnapshot.getChildrenCount();
-                int newId = currentItemCount + 1;
+                int newId = currentItemCount;
                 Food food = new Food(newId, title, price, category, "con", description, 0, quantity, image);
                 foodRef.child(String.valueOf(newId)).setValue(food)
                         .addOnCompleteListener(task -> {

@@ -1,13 +1,19 @@
 package com.example.food_app.view.profile;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
 import com.example.food_app.base.BaseActivity;
 import com.example.food_app.databinding.ActivityProfileBinding;
 import com.example.food_app.helper.CallBack;
@@ -66,6 +72,10 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
             startActivity(intent);
         });
 
+        binding.btnUpdateAvatar.setOnClickListener(v -> {
+            checkPermissionCamera();
+        });
+
         binding.btnSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,6 +115,7 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
         binding.tvEmail.setText(currentUser.getEmail());
         binding.tvContact.setText(currentUser.getContact());
         binding.tvAddress.setText(!currentUser.getAddress().equals("") ? currentUser.getAddress() : "Hãy cập nhật đỉa chỉ của bạn");
+        Glide.with(this).load(SharePreferenceUtils.getString(Constant.AVATAR, "")).into(binding.imvProfile);
     }
     private void initLoadingData() {
         progressDialog = new ProgressDialog(this);
@@ -112,6 +123,29 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setCancelable(false);
         progressDialog.show();
+    }
+
+    private void checkPermissionCamera() {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S_V2) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES, Manifest.permission.READ_MEDIA_VIDEO}, 1222);
+            } else {
+                selectImageFromGallery();
+            }
+        } else {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 1222);
+            } else {
+                selectImageFromGallery();
+            }
+        }
+    }
+
+    private void selectImageFromGallery() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_PICK);
+        startActivityForResult(intent, 100);
     }
 
     private void signOut() {
@@ -123,5 +157,17 @@ public class ProfileActivity extends BaseActivity<ActivityProfileBinding> {
         SharePreferenceUtils.putString(Constant.PASSWORD,"");
         startActivity(intent);
         finish(); // Đảm bảo người dùng không thể quay lại màn hình này bằng nút back
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100) {
+            if (resultCode == Activity.RESULT_OK) {
+                Glide.with(this).load(data.getData().toString()).into(binding.imvProfile);
+                SharePreferenceUtils.putString(Constant.AVATAR, data.getData().toString());
+                Log.d("imageActi", data.getData().toString()+"---");
+            }
+        }
     }
 }

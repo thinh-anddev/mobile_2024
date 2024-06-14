@@ -93,6 +93,7 @@ public class CartActivity extends BaseActivity<ActivityCartBinding> {
         binding.btnCreateOrder.setOnClickListener(v -> {
             addManyItemProduct();
             buyManyItemProduct();
+            updateCartInFirebase();
             Log.d("kkkk",listOrderTemp.size()+"");
         });
     }

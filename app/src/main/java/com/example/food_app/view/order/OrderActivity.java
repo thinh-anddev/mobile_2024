@@ -20,6 +20,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.example.food_app.R;
 import com.example.food_app.base.BaseActivity;
 import com.example.food_app.databinding.ActivityOrderBinding;
@@ -28,6 +29,7 @@ import com.example.food_app.model.Cart;
 import com.example.food_app.model.Order;
 import com.example.food_app.model.User;
 import com.example.food_app.utils.Constant;
+import com.example.food_app.utils.SharePreferenceUtils;
 import com.example.food_app.view.home.HomeActivity;
 import com.example.food_app.view.home.adapter.OrderAdapter;
 import com.example.food_app.view.profile.ChangeInfoActivity;
@@ -81,9 +83,13 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> {
         });
 
         binding.btnStartOrder.setOnClickListener(v -> {
-            order.setStatus(Constant.PENDING);
-            updateOrder(order);
-            startActivity(new Intent(OrderActivity.this, OrderSuccessActivity.class));
+            if (order.getAddress().isEmpty()) {
+                Toast.makeText(OrderActivity.this, "Vui lòng nhập địa chỉ cho đơn hàng này", Toast.LENGTH_SHORT).show();
+            } else {
+                order.setStatus(Constant.PENDING);
+                updateOrder(order);
+                startActivity(new Intent(OrderActivity.this, OrderSuccessActivity.class));
+            }
         });
 
         binding.cvProfile.setOnClickListener(v -> {
@@ -182,6 +188,7 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> {
         binding.tvEmail.setText(order.getEmail());
         binding.tvContact.setText(order.getContact());
         binding.tvAddress.setText(!order.getAddress().equals("") ? order.getAddress() : "Hãy cập nhật đỉa chỉ của bạn");
+        Glide.with(this).load(SharePreferenceUtils.getString(Constant.AVATAR, "")).into(binding.imvProfile);
     }
 
     private double countSumPrice(Order order) {
