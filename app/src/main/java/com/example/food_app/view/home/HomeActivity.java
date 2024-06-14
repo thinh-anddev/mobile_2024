@@ -130,7 +130,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements C
         binding.drawer.lvSetting.setAdapter(settingDrawerAdapter);
 
         if (SharePreferenceUtils.getBoolean(Constant.ADMIN, false)) {
-            drawerItemGeneral = new DrawerItemModel[3];
+            drawerItemGeneral = new DrawerItemModel[4];
             drawerItemGeneral[0] = new DrawerItemModel(R.drawable.ic_profile, "Trang cá nhân");
             drawerItemGeneral[1] = new DrawerItemModel(R.drawable.ic_history, "Lịch sử đơn hàng");
             drawerItemGeneral[2] = new DrawerItemModel(R.drawable.ic_farvourite, "Danh sách yêu thích");
@@ -321,6 +321,10 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements C
                 break;
             case 2:
                 intent = new Intent(this, FavouriteActivity.class);
+                startActivity(intent);
+                break;
+            case 3:
+                intent = new Intent(this, AdminActivity.class);
                 startActivity(intent);
                 break;
         }
