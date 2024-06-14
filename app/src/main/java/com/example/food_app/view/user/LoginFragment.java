@@ -99,15 +99,24 @@ public class LoginFragment extends BaseFragment<FragmentLoginBinding> {
                     SharePreferenceUtils.putString(Constant.USERNAME,email);
                     SharePreferenceUtils.putString(Constant.PASSWORD,password);
                     if (currentUser.getAdmin().equals("0")) {
+                        SharePreferenceUtils.putBoolean(Constant.ADMIN, false);
                         startActivity(new Intent(requireActivity(), HomeActivity.class));
-                    } else startActivity(new Intent(requireActivity(), AdminActivity.class));
+                    } else {
+                        SharePreferenceUtils.putBoolean(Constant.ADMIN, true);
+                        startActivity(new Intent(requireActivity(), AdminActivity.class));
+                    }
                     Toast.makeText(requireContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                     dialog1.dismiss();
                 })
+
                 .setNegativeButton("Không", (dialog1, which) -> {
                     if (currentUser.getAdmin().equals("0")) {
+                        SharePreferenceUtils.putBoolean(Constant.ADMIN, false);
                         startActivity(new Intent(requireActivity(), HomeActivity.class));
-                    } else startActivity(new Intent(requireActivity(), AdminActivity.class));
+                    } else {
+                        SharePreferenceUtils.putBoolean(Constant.ADMIN, false);
+                        startActivity(new Intent(requireActivity(), AdminActivity.class));
+                    }
                     Toast.makeText(requireContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                     dialog1.dismiss();
                 });

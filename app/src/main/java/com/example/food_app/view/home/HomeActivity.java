@@ -40,6 +40,7 @@ import com.example.food_app.view.home.adapter.NewAdapter;
 import com.example.food_app.view.home.seemore.SeeMoreActivity;
 import com.example.food_app.view.profile.ProfileActivity;
 import com.example.food_app.view.search.SearchActivity;
+import com.example.food_app.view.splash.SplashActivity;
 import com.example.food_app.view.user.UserActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -107,6 +108,10 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements C
             binding.drawerLayout.closeDrawer(binding.clDrawer);
         });
 
+        binding.drawer.btnSignOut.setOnClickListener(v -> {
+            signOut();
+        });
+
         binding.tvSeeMore.setOnClickListener(v -> {
             startActivity(new Intent(HomeActivity.this, SeeMoreActivity.class));
         });
@@ -124,10 +129,18 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements C
         DrawerItemCustomAdapter settingDrawerAdapter = new DrawerItemCustomAdapter(this, R.layout.layout_drawer_setting_item, drawerItemSetting, this::selectItemSetting);
         binding.drawer.lvSetting.setAdapter(settingDrawerAdapter);
 
-        drawerItemGeneral = new DrawerItemModel[3];
-        drawerItemGeneral[0] = new DrawerItemModel(R.drawable.ic_profile, "Trang cá nhân");
-        drawerItemGeneral[1] = new DrawerItemModel(R.drawable.ic_history, "Lịch sử đơn hàng");
-        drawerItemGeneral[2] = new DrawerItemModel(R.drawable.ic_farvourite, "Danh sách yêu thích");
+        if (SharePreferenceUtils.getBoolean(Constant.ADMIN, false)) {
+            drawerItemGeneral = new DrawerItemModel[3];
+            drawerItemGeneral[0] = new DrawerItemModel(R.drawable.ic_profile, "Trang cá nhân");
+            drawerItemGeneral[1] = new DrawerItemModel(R.drawable.ic_history, "Lịch sử đơn hàng");
+            drawerItemGeneral[2] = new DrawerItemModel(R.drawable.ic_farvourite, "Danh sách yêu thích");
+            drawerItemGeneral[3] = new DrawerItemModel(R.drawable.ic_profile, "Trang quản lí");
+        } else {
+            drawerItemGeneral = new DrawerItemModel[3];
+            drawerItemGeneral[0] = new DrawerItemModel(R.drawable.ic_profile, "Trang cá nhân");
+            drawerItemGeneral[1] = new DrawerItemModel(R.drawable.ic_history, "Lịch sử đơn hàng");
+            drawerItemGeneral[2] = new DrawerItemModel(R.drawable.ic_farvourite, "Danh sách yêu thích");
+        }
 
         DrawerItemCustomAdapter generalDrawerAdapter = new DrawerItemCustomAdapter(this, R.layout.layout_drawer_general_item, drawerItemGeneral, this);
         binding.drawer.lvGeneral.setAdapter(generalDrawerAdapter);
@@ -273,6 +286,16 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> implements C
             }
         }
 
+    }
+    private void signOut() {
+        mAuth.signOut();
+        // Chuyển hướng người dùng đến màn hình đăng nhập hoặc màn hình chính
+        Intent intent = new Intent(HomeActivity.this, SplashActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        SharePreferenceUtils.putString(Constant.USERNAME,"");
+        SharePreferenceUtils.putString(Constant.PASSWORD,"");
+        startActivity(intent);
+        finish(); // Đảm bảo người dùng không thể quay lại màn hình này bằng nút back
     }
 
     private void selectItemSetting(int position) {
