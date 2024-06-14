@@ -1,13 +1,17 @@
 package com.example.food_app.view.profile;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.example.food_app.base.BaseActivity;
 import com.example.food_app.databinding.ActivityChangeInfoBinding;
