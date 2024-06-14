@@ -57,8 +57,16 @@ public class AdminActivity extends BaseActivity<ActivityAdminBinding> {
             startActivity(new Intent(this, UserManagerActivity.class));
         });
 
+        binding.btnCreateUser.setOnClickListener(v -> {
+            startActivity(new Intent(this, CreateUserActivity.class));
+        });
+
         binding.btnLogout.setOnClickListener(v -> {
             signOut();
+        });
+
+        binding.btnBack.setOnClickListener(v -> {
+            startActivity(new Intent(this, HomeActivity.class));
         });
     }
 

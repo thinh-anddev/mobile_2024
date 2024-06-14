@@ -96,6 +96,9 @@
             android:name=".view.admin.AddFoodActivity"
             android:exported="false" />
         <activity
+            android:name=".view.admin.CreateUserActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.user.ResetPasswordActivity"
             android:exported="false" />
         <meta-data
