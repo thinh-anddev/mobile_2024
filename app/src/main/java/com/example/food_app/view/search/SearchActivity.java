@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -39,7 +40,7 @@ public class SearchActivity extends BaseActivity<ActivitySearchBinding> {
 
     @Override
     protected void initView() {
-        binding.layoutNoFood.setVisibility(View.VISIBLE);
+        binding.layoutNoFood.setVisibility(View.GONE);
         binding.tvCountFood.setVisibility(View.GONE);
         binding.rcvSearch.setVisibility(View.GONE);
         initLoadingData();
@@ -59,25 +60,29 @@ public class SearchActivity extends BaseActivity<ActivitySearchBinding> {
         binding.btnSearch.setOnClickListener(v -> {
             dialog.show();
             keyword = String.valueOf(binding.edtSearch.getText());
-            searchList = getSearchListByKeyword(searchList, keyword, new CallBack.OnSearchData() {
-                @Override
-                public void onSearch() {
-                    if (searchList.size() != 0) {
-                        binding.tvCountFood.setVisibility(View.VISIBLE);
-                        binding.tvCountFood.setText("Đã tìm thấy "+ searchList.size()+" sản phẩm cho bạn");
-                        binding.rcvSearch.setVisibility(View.VISIBLE);
-                        binding.layoutNoFood.setVisibility(View.GONE);
-                        CommonUtils.hideSoftKeyboard(SearchActivity.this);
-                    } else {
-                        binding.layoutNoFood.setVisibility(View.VISIBLE);
-                        binding.tvCountFood.setVisibility(View.GONE);
-                        binding.rcvSearch.setVisibility(View.GONE);
-                        CommonUtils.hideSoftKeyboard(SearchActivity.this);
+            if (!keyword.isEmpty()) {
+                searchList = getSearchListByKeyword(searchList, keyword, new CallBack.OnSearchData() {
+                    @Override
+                    public void onSearch() {
+                        if (searchList.size() != 0) {
+                            binding.tvCountFood.setVisibility(View.VISIBLE);
+                            binding.tvCountFood.setText("Đã tìm thấy "+ searchList.size()+" sản phẩm cho bạn");
+                            binding.rcvSearch.setVisibility(View.VISIBLE);
+                            binding.layoutNoFood.setVisibility(View.GONE);
+                            CommonUtils.hideSoftKeyboard(SearchActivity.this);
+                        } else {
+                            binding.layoutNoFood.setVisibility(View.VISIBLE);
+                            binding.tvCountFood.setVisibility(View.GONE);
+                            binding.rcvSearch.setVisibility(View.GONE);
+                            CommonUtils.hideSoftKeyboard(SearchActivity.this);
+                        }
+                        dialog.cancel();
                     }
-                    dialog.cancel();
-                }
-            });
-            initFoodAdapter();
+                });
+                initFoodAdapter();
+            } else {
+                Toast.makeText(SearchActivity.this, "Vui lòng nhập thông tin", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
