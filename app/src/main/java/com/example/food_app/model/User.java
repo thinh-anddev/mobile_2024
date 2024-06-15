@@ -10,7 +10,6 @@ public class User implements Serializable {
     private String photoUrl;
     private String contact;
     private String admin;
-    private String paymentMethod;
     private boolean isBlock;
     public User(){}
 

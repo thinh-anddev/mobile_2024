@@ -16,6 +16,8 @@ import com.example.food_app.model.Food;
 import com.example.food_app.model.Order;
 import com.example.food_app.utils.Constant;
 
+import java.text.DecimalFormat;
+
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
     Context context;
     Order order;
@@ -38,7 +40,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.tvCount.setText(cart.getNumber()+"x");
         holder.tvNameFood.setText(food.getTitle());
         double price = Double.valueOf(cart.getNumber()) * food.getPrice();
-        holder.tvPrice.setText(String.valueOf(price));
+        holder.tvPrice.setText(formatCost((int) price));
+    }
+
+    private String formatCost(int cost) {
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        String formattedCost = decimalFormat.format(cost)+"đ";
+        return formattedCost;
     }
 
     @Override

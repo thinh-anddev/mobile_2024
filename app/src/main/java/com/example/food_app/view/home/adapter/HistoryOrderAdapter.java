@@ -14,6 +14,7 @@ import com.example.food_app.model.Cart;
 import com.example.food_app.model.Order;
 import com.example.food_app.utils.Constant;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapter.HistoryViewHolder> {
@@ -56,7 +57,7 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
 
         holder.invoiceNumber.setText(order.getInvoiceNumber()+"("+status+")");
         holder.tvDate.setText(order.getTime());
-        holder.tvPrice.setText(countSumPrice(order)+"");
+        holder.tvPrice.setText(formatCost((int) countSumPrice(order)));
 
         holder.itemView.setOnClickListener(v -> {
             listener.onClick(order);
@@ -73,6 +74,11 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
             sum += Double.valueOf(c.getNumber()) * c.getFood().getPrice();
         }
         return sum;
+    }
+    private String formatCost(int cost) {
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        String formattedCost = decimalFormat.format(cost)+"đ";
+        return formattedCost;
     }
     public interface onClickOrderListener {
         void onClick(Order order);
