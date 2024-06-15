@@ -37,6 +37,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,7 +71,7 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> {
         initViewOrder();
         initAdapter();
         bindEvent();
-        binding.tvSumValue.setText(String.valueOf(countSumPrice(order)));
+        binding.tvSumValue.setText(formatCost((int) countSumPrice(order)));
     }
 
     @Override
@@ -205,5 +206,11 @@ public class OrderActivity extends BaseActivity<ActivityOrderBinding> {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setCancelable(false);
         progressDialog.show();
+    }
+
+    private String formatCost(int cost) {
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        String formattedCost = decimalFormat.format(cost)+"đ";
+        return formattedCost;
     }
 }

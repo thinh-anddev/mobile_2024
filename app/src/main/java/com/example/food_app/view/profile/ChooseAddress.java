@@ -1,12 +1,9 @@
 package com.example.food_app.view.profile;
 
-import static androidx.compose.ui.graphics.CanvasKt.Canvas;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -30,18 +27,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.food_app.R;
 import com.example.food_app.base.BaseActivity;
 import com.example.food_app.databinding.ActivityChooseAddressBinding;
-import com.example.food_app.databinding.ActivityHomeBinding;
 import com.example.food_app.utils.CommonUtils;
 import com.example.food_app.utils.Constant;
 import com.example.food_app.utils.SharePreferenceUtils;
-import com.example.food_app.view.home.HomeActivity;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;

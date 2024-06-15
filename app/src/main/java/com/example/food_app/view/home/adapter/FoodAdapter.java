@@ -74,8 +74,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             if (food.getPhotoString().equals("local")) {
                 binding.imvFood.setImageResource(food.getPhoto());
             } else {
-                Uri uri = Uri.parse(food.getPhotoString());
-                Glide.with(binding.getRoot().getContext()).load(uri).into(binding.imvFood);
+                Glide.with(binding.getRoot().getContext()).load(food.getPhotoString().trim()).into(binding.imvFood);
             }
 
             binding.tvFood.setText(food.getTitle());
