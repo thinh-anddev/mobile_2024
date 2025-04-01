@@ -4,6 +4,7 @@
     <!-- Automatically generated file. DO NOT MODIFY -->
 
     <!-- Value from product flavor: develop -->
-    <string name="geo_key" translatable="false">AIzaSyAjUaBaBDLfdeYF09xS9vbP7nO1AKJQ2zk</string>
+    <!-- AIzaSyAjUaBaBDLfdeYF09xS9vbP7nO1AKJQ2zk -->
+    <string name="geo_key" translatable="false"></string>
 
 </resources>
